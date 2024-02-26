@@ -633,7 +633,7 @@ paths:
       security:
         - bearerAuth: []
 
-  /attribute-sets:
+  /attribute_sets:
     get:
       tags:
         - Attribute Sets
@@ -676,7 +676,7 @@ paths:
           description: Unauthorized. Invalid or missing authorization token.
       security:
         - bearerAuth: []
-  /attribute-sets/{attribute_set_id}:
+  /attribute_sets/{attribute_set_id}:
     get:
       tags:
         - Attribute Sets
@@ -757,7 +757,7 @@ paths:
       security:
         - bearerAuth: []
 
-  /attribute-set-attributes:
+  /attribute_set_attributes:
     get:
       tags:
         - Attribute Set Attributes
@@ -776,7 +776,7 @@ paths:
           description: Unauthorized. Invalid or missing authorization token.
       security:
         - bearerAuth: []
-  /attribute-sets/{attribute_set_id}/attributes:
+  /attribute_sets/{attribute_set_id}/attributes:
     post:
       tags:
         - Attribute Set Attributes
@@ -810,7 +810,7 @@ paths:
           description: Unauthorized. Invalid or missing authorization token.
       security:
         - bearerAuth: []
-  /attribute-sets/{attribute_set_id}/attributes/{attribute_id}:
+  /attribute_sets/{attribute_set_id}/attributes/{attribute_id}:
     delete:
       tags:
         - Attribute Set Attributes
@@ -940,7 +940,7 @@ paths:
           description: Unauthorized. Invalid or missing authorization token.
       security:
         - bearerAuth: []
-  /block-assets:
+  /block_assets:
     get:
       tags:
         - Block Assets
@@ -959,7 +959,7 @@ paths:
           description: Unauthorized. Invalid or missing authorization token.
       security:
         - bearerAuth: []
-  /block-assets/{block_asset_id}:
+  /block_assets/{block_asset_id}:
     get:
       tags:
         - Block Assets
@@ -1108,7 +1108,7 @@ paths:
           description: Unauthorized. Invalid or missing authorization token.
       security:
         - bearerAuth: []
-  /brand-assets:
+  /brand_assets:
     get:
       tags:
         - Brand Assets
@@ -1151,7 +1151,7 @@ paths:
           description: Unauthorized. Invalid or missing authorization token.
       security:
         - bearerAuth: []
-  /brand-assets/{brand_asset_id}:
+  /brand_assets/{brand_asset_id}:
     get:
       tags:
         - Brand Assets
@@ -1997,7 +1997,7 @@ paths:
           description: Unauthorized. Invalid or missing authorization token.
       security:
         - bearerAuth: []
-  /generic-entities/{generic_entity_id}/concrete_entities:
+  /generic_entities/{generic_entity_id}/concrete_entities:
     get:
       tags:
         - Generic Entities
@@ -2026,7 +2026,7 @@ paths:
           description: Unauthorized. Invalid or missing authorization token.
       security:
         - bearerAuth: []
-  /generic-entities/{ID}/concrete-entities:
+  /generic_entities/{ID}/concrete_entities:
     post:
       tags:
         - Generic Entities
@@ -2063,7 +2063,7 @@ paths:
           description: Unauthorized. Invalid or missing authorization token.
       security:
         - bearerAuth: []
-  /generic_entities/{generic_entity_id}/concrete-entities/{concrete_entity_id}:
+  /generic_entities/{generic_entity_id}/concrete_entities/{concrete_entity_id}:
     get:
       tags:
         - Concrete Entities
@@ -2285,7 +2285,7 @@ paths:
           description: Unauthorized. Invalid or missing authorization token.
       security:
         - bearerAuth: []
-  /option-values/{option_value_id}:
+  /option_values/{option_value_id}:
     get:
       tags:
         - Option Values
@@ -2366,7 +2366,7 @@ paths:
           description: Unauthorized. Invalid or missing authorization token.
       security:
         - bearerAuth: []
-  /option-values:
+  /option_values:
     post:
       tags:
         - Option Values
@@ -2391,7 +2391,7 @@ paths:
           description: Unauthorized. Invalid or missing authorization token.
       security:
         - bearerAuth: []
-  /option-sets:
+  /option_sets:
     get:
       tags:
         - Option Sets
@@ -2435,7 +2435,7 @@ paths:
           description: Unauthorized. Invalid or missing authorization token.
       security:
         - bearerAuth: []
-  /option-sets/{option_set_id}:
+  /option_sets/{option_set_id}:
     get:
       tags:
         - Option Sets
@@ -2495,7 +2495,7 @@ paths:
           description: Unauthorized. Invalid or missing authorization token.
       security:
         - bearerAuth: []
-  /option-set-options:
+  /option_set_options:
     get:
       tags:
         - Option Set Options
@@ -2514,7 +2514,7 @@ paths:
           description: Unauthorized. Invalid or missing authorization token.
       security:
         - bearerAuth: []
-  /option-set-options/{option_set_option_id}:
+  /option_set_options/{option_set_option_id}:
     put:
       tags:
         - Option Set Options
@@ -2523,7 +2523,7 @@ paths:
       parameters:
         - name: option_set_option_id
           in: path
-          required: false
+          required: true
           description: The ID of the option set option to update. Omit this parameter to create a new option set option.
           schema:
             type: string
@@ -2658,7 +2658,22 @@ paths:
             schema:
               type: object
               $ref: "#/components/schemas/Page"
-  /page-assets:
+      responses:
+        "200":
+          description: Page updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Page"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Page not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /page_assets:
     get:
       tags:
         - Page Assets
@@ -2677,7 +2692,7 @@ paths:
           description: Unauthorized. Invalid or missing authorization token.
       security:
         - bearerAuth: []
-  /page-assets/{page_asset_id}:
+  /page_assets/{page_asset_id}:
     get:
       tags:
         - Page Assets
@@ -2715,9 +2730,38 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Product"
+                type: object
+                $ref: "#/components/schemas/Product"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Products
+      summary: Create a Product
+      description: Create a new product in the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/Product"
+      responses:
+        "201":
+          description: Product created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product:
+                    type: object
+                    $ref: "#/components/schemas/Product"
+
+        "400":
+          description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
       security:
@@ -2744,6 +2788,235 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Product"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}:
+    get:
+      tags:
+        - Products
+      summary: Get a Specific Product by ID
+      description: Retrieve details of a specific product by its ID.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified product.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: Product not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Products
+      summary: Update a Specific Product
+      description: Update an existing product by its ID.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/Product"
+      responses:
+        "200":
+          description: Product updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product:
+                    $ref: "#/components/schemas/Product"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Product not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Products
+      summary: Delete a Specific Product
+      description: Delete an existing product by its ID.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product to delete.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Product deleted successfully.
+        "404":
+          description: Product not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/version/{version_id}:
+    get:
+      tags:
+        - Products
+      summary: Get a Version of a Product
+      description: Retrieve a specific version of a product by its product ID and version ID.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product.
+          schema:
+            type: string
+        - name: version_id
+          in: path
+          required: true
+          description: The ID of the product version to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified product version.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: Product or product version not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Products
+      summary: Update a Specific Version of a Product
+      description: Update an existing version of a product by its product ID and version ID, or create a new product version if it does not exist.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product to update.
+          schema:
+            type: string
+        - name: version_id
+          in: path
+          required: true
+          description: The ID of the version to update or create.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/Product"
+      responses:
+        "200":
+          description: Product version updated successfully.
+        "201":
+          description: New product version created successfully.
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Product or product version not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Products
+      summary: Delete a Specific Version of a Product
+      description: Delete a specific version of an existing product by its product ID and version ID.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product whose version is to be deleted.
+          schema:
+            type: string
+        - name: version_id
+          in: path
+          required: true
+          description: The ID of the version to delete.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Product version deleted successfully.
+        "404":
+          description: Product or product version not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/sku/{sku}:
+    get:
+      tags:
+        - Products
+      summary: Get a Specific Product by SKU
+      description: Retrieve details of a specific product by its SKU.
+      parameters:
+        - name: sku
+          in: path
+          required: true
+          description: The SKU of the product to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified product.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: Product not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{child_product_id}/remove_from_parent:
+    delete:
+      tags:
+        - Products
+      summary: Remove Child Product From Parent
+      description: Remove a given child product from its parent product. The child product will be unpublished as a result of this operation.
+      parameters:
+        - name: child_product_id
+          in: path
+          required: true
+          description: The ID of the child product to remove from its parent.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Child product removed from parent successfully.
+        "404":
+          description: Child product or parent product not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
       security:
@@ -3342,7 +3615,7 @@ components:
         children:
           type: array
           items:
-            $ref: "#/components/schemas/Product"
+            type: string
           description: Child product objects (READ ONLY).
         is_visible:
           type: boolean
@@ -3359,12 +3632,12 @@ components:
         prices:
           type: array
           items:
-            $ref: "#/components/schemas/ProductPrice"
+            type: string
           description: Product price objects (READ ONLY).
         inventory:
           type: array
           items:
-            $ref: "#/components/schemas/ProductInventory"
+            type: string
           description: Product inventory objects (READ ONLY).
       required:
         - id
