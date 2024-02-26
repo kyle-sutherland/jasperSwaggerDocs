@@ -1,0 +1,3327 @@
+openapi: 3.0.3
+info:
+  version: "1.0"
+  title: Jasper API
+servers:
+  - url: "{protocol}://{server}/api/v1"
+    description: Your PIM API server
+    variables:
+      protocol:
+        default: "https"
+        enum:
+          - "https"
+          - "http"
+        description: The API protocol
+      server:
+        default: "yourpim.com"
+        description: Your PIM API server
+tags:
+  - name: Authentication
+    description: >
+      Jasper uses API keys to allow access to the API. Contact your account representative to receive a key for your PIM. Jasper expects the API key to be included in the header of all API requests. Click 'Authorize' to generate an example.
+    externalDocs:
+      description: main docs
+      url: https://api.jasperpim.com/#authentication
+  - name: Admin
+    description: This endpoint returns the current PIM server time, confirming authentication.
+    externalDocs:
+      description: main docs
+      url: https://api.jasperpim.com/#admin
+  - name: Attributes
+  - name: Attribute Type Values
+  - name: Attribute Sets
+  - name: Attribute Set Attributes
+  - name: Blocks
+  - name: Block Assets
+  - name: Brands
+  - name: Brand Assets
+  - name: Brand Attributes
+  - name: Categories
+  - name: Category Assets
+  - name: Category Channels
+  - name: Channels
+  - name: Display Groups
+  - name: Exports
+  - name: Generic Entities
+  - name: Options
+  - name: Option Values
+  - name: Option Sets
+  - name: Option Set Options
+  - name: Pages
+  - name: Page Assets
+  - name: Produtct Assets
+  - name: Product Barcodes
+  - name: Product Categories
+  - name: Product Prices
+  - name: Product Inventory
+  - name: Product Attributes
+  - name: Product Channels
+  - name: Product Relations
+  - name: Product Relations Attributes
+  - name: Product Tags
+  - name: Template
+  - name: Webhooks
+  - name: Errors
+
+paths:
+  /ping:
+    get:
+      responses:
+        "200":
+          description: Successful request returns current PIM server time.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ping"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /attributes:
+    get:
+      tags:
+        - Attributes
+      responses:
+        "200":
+          description: This endpoint retrieves all attributes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Attribute"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Attributes
+      summary: Create an Attribute
+      description: This endpoint allows for the creation of a new attribute.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Attribute"
+      responses:
+        "201":
+          description: Attribute created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Attribute"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+
+  /attributes/version/{VERSION_ID}:
+    get:
+      tags:
+        - Attributes
+      summary: Retrieve Attributes by Version
+      description: This endpoint retrieves all attributes of the specified version.
+      parameters:
+        - name: VERSION_ID
+          in: path
+          required: true
+          description: The ID of the version for which attributes are to be retrieved.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of attributes for the specified version.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Attribute"
+        "404":
+          description: Version not found
+
+  /attributes/{attribute_id}:
+    get:
+      tags:
+        - Attributes
+      summary: Retrieve a Specific Attribute
+      description: This endpoint retrieves a specific attribute by its ID.
+      parameters:
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified attribute.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Attribute"
+        "404":
+          description: Attribute not found.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Attributes
+      summary: Update a Specific Attribute
+      description: This endpoint allows for updating an existing attribute by its ID.
+      parameters:
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Attribute"
+      responses:
+        "200":
+          description: Attribute updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Attribute"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Attribute not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Attributes
+      summary: Delete a Specific Attribute
+      description: This endpoint allows for the deletion of a specific attribute by its ID.
+      parameters:
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute to delete.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Attribute deleted successfully.
+        "404":
+          description: Attribute not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+
+  /attributes/{attribute_id}/versions/{version_id}:
+    get:
+      tags:
+        - Attributes
+      summary: Retrieve a Specific Attribute by Version
+      description: This endpoint retrieves a specific attribute by its ID for the specified version.
+      parameters:
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute to retrieve.
+          schema:
+            type: string
+        - name: version_id
+          in: path
+          required: true
+          description: The ID of the version for which the attribute is to be retrieved.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified attribute for the given version.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Attribute"
+        "404":
+          description: Attribute or version not found.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Attributes
+      summary: Delete a Specific Attribute Version
+      description: This endpoint allows for the deletion of a specific version of an attribute by its ID and version ID.
+      parameters:
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute for which a version is to be deleted.
+          schema:
+            type: string
+        - name: version_id
+          in: path
+          required: true
+          description: The ID of the attribute version to delete.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Attribute version deleted successfully.
+        "404":
+          description: Attribute or attribute version not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+
+    put:
+      tags:
+        - Attributes
+      summary: Update a Specific Attribute Version
+      description: This endpoint allows for updating a specific version of an existing attribute by its ID and version ID.
+      parameters:
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute to update.
+          schema:
+            type: string
+        - name: version_id
+          in: path
+          required: true
+          description: The ID of the version of the attribute to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Attribute"
+      responses:
+        "200":
+          description: Attribute version updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Attribute"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Attribute or version not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+
+  /attributes/{attribute_id}/type_values:
+    get:
+      tags:
+        - Attribute Type Values
+      summary: Get All Attribute Type Values
+      description: Retrieve a list of all attribute type values defined in the PIM.
+      parameters:
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute whose type values to retrieve
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of attribute type values.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AttributeTypeValue"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+
+  /attributes/{attribute_id}/type_values/version/{version_id}:
+    get:
+      tags:
+        - Attribute Type Values
+      summary: Get All Attribute Type Values by Version
+      description: Retrieve all attribute type values for a specific version.
+      parameters:
+        - name: version_id
+          in: path
+          required: true
+          description: The ID of the version for which attribute type values are to be retrieved.
+          schema:
+            type: string
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute whose type values to retrieve
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of attribute type values for the specified version.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AttributeTypeValue"
+        "404":
+          description: Version not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+
+  /attributes/{attribute_id}/type-values/{type_value_id}/version/{version_id}:
+    get:
+      tags:
+        - Attribute Type Values
+      summary: Get a Version of the Specific Attribute Type Value
+      description: Retrieve a specific version of an attribute type value by its ID and version ID.
+      parameters:
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute type value.
+          schema:
+            type: string
+        - name: version_id
+          in: path
+          required: true
+          description: The ID of the version of the attribute type value to retrieve.
+          schema:
+            type: string
+        - name: type_value_id
+          in: path
+          required: true
+          description: The ID of the version of the attribute type value to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified version of the attribute type value.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttributeTypeValue"
+        "404":
+          description: Attribute type value or version not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /attributes/{attribute_id}/attributes/{type_value_id}:
+    get:
+      tags:
+        - Attribute Type Values
+      summary: Get a Specific Attribute Type Value
+      description: Retrieve details of a specific attribute type value by its ID.
+      parameters:
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute type value to retrieve.
+          schema:
+            type: string
+        - name: type_value_id
+          in: path
+          required: true
+          description: The ID of the type value to retrieve
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified attribute type value.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttributeTypeValue"
+        "404":
+          description: Attribute type value not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+
+  /attribute/{attribute_id}/type_values:
+    post:
+      tags:
+        - Attribute Type Values
+      summary: Create an Attribute Type Value
+      description: Create a new attribute type value in the system.
+      parameters:
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute to add.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttributeTypeValue"
+      responses:
+        "201":
+          description: Attribute type value created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttributeTypeValue"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+
+  /attributes/{attribute_id}/type_values/{type_value_id}/version/{version_id}:
+    put:
+      tags:
+        - Attribute Type Values
+      summary: Update the Version of the Attribute Type Value
+      description: Update a specific version of an existing attribute type value by its ID and version ID.
+      parameters:
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute.
+          schema:
+            type: string
+        - name: type_value_id
+          in: path
+          required: true
+          description: The ID of the attribute type value.
+          schema:
+            type: string
+        - name: version_id
+          in: path
+          required: true
+          description: The ID of the version.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttributeTypeValue"
+      responses:
+        "200":
+          description: The version of the attribute type value updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttributeTypeValue"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Attribute type value or version not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+
+  /attributes/{attribute_id}/type_values/{type_value_id}:
+    put:
+      tags:
+        - Attribute Type Values
+      summary: Update Attribute Type Value
+      description: Update an existing attribute type value by its ID.
+      parameters:
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute type value to update.
+          schema:
+            type: string
+        - name: type_value_id
+          in: path
+          required: true
+          description: The ID of the type value to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttributeTypeValue"
+      responses:
+        "200":
+          description: Attribute type value updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttributeTypeValue"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Attribute type value not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Attribute Type Values
+      summary: Delete a Specific Attribute Type Value
+      description: This endpoint allows for the deletion of a specific attribute type value by its ID.
+      parameters:
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute type value to delete.
+          schema:
+            type: string
+        - name: type_value_id
+          in: path
+          required: true
+          description: the ID of the type value
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Attribute type value deleted successfully.
+        "404":
+          description: Attribute type value not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+
+  /attributes/{attribute_id}/type_values/{type_value_id}/versions/{version_id}:
+    delete:
+      tags:
+        - Attribute Type Values
+      summary: Delete a Version of the Specific Attribute Type Value
+      description: This endpoint allows for the deletion of a specific version of an attribute type value by its ID and version ID.
+      parameters:
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute.
+          schema:
+            type: string
+        - name: type_value_id
+          in: path
+          required: true
+          description: The ID of the attribute type value.
+          schema:
+            type: string
+        - name: version_id
+          in: path
+          required: true
+          description: The ID of the version to delete.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: The version of the attribute type value deleted successfully.
+        "404":
+          description: Attribute type value or version not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+
+  /attribute-sets:
+    get:
+      tags:
+        - Attribute Sets
+      summary: Get All Attribute Sets
+      description: Retrieve a list of all attribute sets defined in the PIM.
+      responses:
+        "200":
+          description: A list of attribute sets.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AttributeSet"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Attribute Sets
+      summary: Create an Attribute Set
+      description: Create a new attribute set in the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttributeSet"
+      responses:
+        "201":
+          description: Attribute set created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttributeSet"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /attribute-sets/{attribute_set_id}:
+    get:
+      tags:
+        - Attribute Sets
+      summary: Get a Specific Attribute Set
+      description: Retrieve details of a specific attribute set by its ID.
+      parameters:
+        - name: attribute_set_id
+          in: path
+          required: true
+          description: The ID of the attribute set to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified attribute set.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttributeSet"
+        "404":
+          description: Attribute set not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Attribute Sets
+      summary: Update a Specific Attribute Set
+      description: Update an existing attribute set by its ID.
+      parameters:
+        - name: attribute_set_id
+          in: path
+          required: true
+          description: The ID of the attribute set to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttributeSet"
+      responses:
+        "200":
+          description: Attribute set updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttributeSet"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Attribute set not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Attribute Sets
+      summary: Delete a Specific Attribute Set
+      description: This endpoint allows for the deletion of a specific attribute set by its ID.
+      parameters:
+        - name: attribute_set_id
+          in: path
+          required: true
+          description: The ID of the attribute set to delete.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Attribute set deleted successfully.
+        "404":
+          description: Attribute set not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+
+  /attribute-set-attributes:
+    get:
+      tags:
+        - Attribute Set Attributes
+      summary: Get All Attribute Set Attributes
+      description: Retrieve a list of all attribute set attributes defined in the PIM.
+      responses:
+        "200":
+          description: A list of attribute set attributes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AttributeSetAttribute"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /attribute-sets/{attribute_set_id}/attributes:
+    post:
+      tags:
+        - Attribute Set Attributes
+      summary: Create an Attribute Set Attribute
+      description: Add a new attribute to an existing attribute set.
+      parameters:
+        - name: attribute_set_id
+          in: path
+          required: true
+          description: The ID of the attribute set to which the attribute will be added.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttributeSetAttribute"
+      responses:
+        "201":
+          description: Attribute set attribute created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttributeSetAttribute"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Attribute set not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /attribute-sets/{attribute_set_id}/attributes/{attribute_id}:
+    delete:
+      tags:
+        - Attribute Set Attributes
+      summary: Delete a Specific Attribute Set Attribute
+      description: This endpoint allows for the deletion of a specific attribute from an attribute set by their IDs.
+      parameters:
+        - name: attribute_set_id
+          in: path
+          required: true
+          description: The ID of the attribute set.
+          schema:
+            type: string
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute to delete from the attribute set.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Attribute set attribute deleted successfully.
+        "404":
+          description: Attribute set or attribute not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /blocks:
+    get:
+      tags:
+        - Blocks
+      summary: Get All Blocks
+      description: Retrieve a list of all blocks defined in the PIM.
+      responses:
+        "200":
+          description: A list of blocks.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Block"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Blocks
+      summary: Create a Block
+      description: Create a new block in the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Block"
+      responses:
+        "201":
+          description: Block created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Block"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /blocks/{block_id}:
+    get:
+      tags:
+        - Blocks
+      summary: Get a Specific Block
+      description: Retrieve details of a specific block by its ID.
+      parameters:
+        - name: block_id
+          in: path
+          required: true
+          description: The ID of the block to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified block.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Block"
+        "404":
+          description: Block not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Blocks
+      summary: Update a Specific Block
+      description: Update an existing block by its ID.
+      parameters:
+        - name: block_id
+          in: path
+          required: true
+          description: The ID of the block to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Block"
+      responses:
+        "200":
+          description: Block updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Block"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Block not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /block-assets:
+    get:
+      tags:
+        - Block Assets
+      summary: Get All Block Assets
+      description: Retrieve a list of all block assets defined in the PIM.
+      responses:
+        "200":
+          description: A list of block assets.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BlockAsset"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /block-assets/{block_asset_id}:
+    get:
+      tags:
+        - Block Assets
+      summary: Get a Specific Block Asset
+      description: Retrieve details of a specific block asset by its ID.
+      parameters:
+        - name: block_asset_id
+          in: path
+          required: true
+          description: The ID of the block asset to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified block asset.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlockAsset"
+        "404":
+          description: Block asset not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /brands:
+    get:
+      tags:
+        - Brands
+      summary: Get All Brands
+      description: Retrieve a list of all brands defined in the PIM.
+      responses:
+        "200":
+          description: A list of brands.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Brand"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Brands
+      summary: Create a Brand
+      description: Create a new brand in the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Brand"
+      responses:
+        "201":
+          description: Brand created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Brand"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /brands/{brand_id}:
+    get:
+      tags:
+        - Brands
+      summary: Get a Specific Brand
+      description: Retrieve details of a specific brand by its ID.
+      parameters:
+        - name: brand_id
+          in: path
+          required: true
+          description: The ID of the brand to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified brand.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Brand"
+        "404":
+          description: Brand not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Brands
+      summary: Update a Specific Brand
+      description: Update an existing brand by its ID.
+      parameters:
+        - name: brand_id
+          in: path
+          required: true
+          description: The ID of the brand to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Brand"
+      responses:
+        "200":
+          description: Brand updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Brand"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Brand not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Brands
+      summary: Delete a Specific Brand
+      description: This endpoint allows for the deletion of a specific brand by its ID.
+      parameters:
+        - name: brand_id
+          in: path
+          required: true
+          description: The ID of the brand to delete.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Brand deleted successfully.
+        "404":
+          description: Brand not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /brand-assets:
+    get:
+      tags:
+        - Brand Assets
+      summary: Get All Brand Assets
+      description: Retrieve a list of all brand assets defined in the PIM.
+      responses:
+        "200":
+          description: A list of brand assets.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BrandAsset"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Brand Assets
+      summary: Create a Brand Asset
+      description: Create a new brand asset in the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BrandAsset"
+      responses:
+        "201":
+          description: Brand asset created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BrandAsset"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /brand-assets/{brand_asset_id}:
+    get:
+      tags:
+        - Brand Assets
+      summary: Get a Specific Brand Asset
+      description: Retrieve details of a specific brand asset by its ID.
+      parameters:
+        - name: brand_asset_id
+          in: path
+          required: true
+          description: The ID of the brand asset to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified brand asset.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BrandAsset"
+        "404":
+          description: Brand asset not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Brand Assets
+      summary: Update a Specific Brand Asset
+      description: Update an existing brand asset by its ID.
+      parameters:
+        - name: brand_asset_id
+          in: path
+          required: true
+          description: The ID of the brand asset to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BrandAsset"
+      responses:
+        "200":
+          description: Brand asset updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BrandAsset"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Brand asset not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Brand Assets
+      summary: Delete a Specific Brand Asset
+      description: This endpoint allows for the deletion of a specific brand asset by its ID.
+      parameters:
+        - name: brand_asset_id
+          in: path
+          required: true
+          description: The ID of the brand asset to delete.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Brand asset deleted successfully.
+        "404":
+          description: Brand asset not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /brand-attributes:
+    get:
+      tags:
+        - Brand Attributes
+      summary: Get All Brand Attributes
+      description: Retrieve a list of all brand attributes defined in the PIM.
+      responses:
+        "200":
+          description: A list of brand attributes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BrandAttribute"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Brand Attributes
+      summary: Create a Brand Attribute
+      description: Create a new brand attribute in the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BrandAttribute"
+      responses:
+        "201":
+          description: Brand attribute created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BrandAttribute"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+
+  /brand-attributes/{brand_attribute_id}:
+    get:
+      tags:
+        - Brand Attributes
+      summary: Get a Specific Brand Attribute
+      description: Retrieve details of a specific brand attribute by its ID.
+      parameters:
+        - name: brand_attribute_id
+          in: path
+          required: true
+          description: The ID of the brand attribute to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified brand attribute.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BrandAttribute"
+        "404":
+          description: Brand attribute not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Brand Attributes
+      summary: Update a specific brand attribute value.
+      description: This endpoint updates a specific brand attribute value.
+      parameters:
+        - name: brand_attribute_id
+          in: path
+          required: true
+          description: The ID of the brand attribute to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BrandAttribute"
+      responses:
+        "200":
+          description: Brand asset updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BrandAttribute"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Brand asset not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token
+      security:
+        - bearerAuth: []
+  /attribute-values/{attribute_value_id}:
+    delete:
+      tags:
+        - Brand Attributes
+      summary: Delete a Specific Attribute Value
+      description: This endpoint allows for the deletion of a specific attribute value by its ID.
+      parameters:
+        - name: attribute_value_id
+          in: path
+          required: true
+          description: The ID of the attribute value to delete.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Attribute value deleted successfully.
+        "404":
+          description: Attribute value not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /brands/{brand_id}/assigned_attributes:
+    post:
+      tags:
+        - Brand Attributes
+      summary: Assign an Attribute to a Brand
+      description: Assign an existing attribute to a brand.
+      parameters:
+        - name: brand_id
+          in: path
+          required: true
+          description: The ID of the brand to which the attribute will be assigned.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BrandAttribute"
+      responses:
+        "201":
+          description: Attribute assigned to brand successfully.
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Brand or attribute not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /brands/{brand_id}/assigned_attribute_sets:
+    post:
+      tags:
+        - Brand Attributes
+      summary: Assign an Attribute Set to a Brand
+      description: Assign an existing attribute set to a brand.
+      parameters:
+        - name: brand_id
+          in: path
+          required: true
+          description: The ID of the brand to which the attribute set will be assigned.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BrandAttribute"
+      responses:
+        "201":
+          description: Attribute set assigned to brand successfully.
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Brand or attribute set not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /categories:
+    get:
+      tags:
+        - Categories
+      summary: Get All Categories
+      description: Retrieve a list of all categories defined in the PIM.
+      responses:
+        "200":
+          description: A list of categories.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Categories
+      summary: Create a Category
+      description: Create a new category in the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Category"
+      responses:
+        "201":
+          description: Category created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /categories/{category_id}:
+    get:
+      tags:
+        - Categories
+      summary: Get a Specific Category
+      description: Retrieve details of a specific category by its ID.
+      parameters:
+        - name: category_id
+          in: path
+          required: true
+          description: The ID of the category to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified category.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+        "404":
+          description: Category not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Categories
+      summary: Update a Specific Category
+      description: Update an existing category by its ID.
+      parameters:
+        - name: category_id
+          in: path
+          required: true
+          description: The ID of the category to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Category"
+      responses:
+        "200":
+          description: Category updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Category not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Categories
+      summary: Delete a Specific Category
+      description: This endpoint allows for the deletion of a specific category by its ID.
+      parameters:
+        - name: category_id
+          in: path
+          required: true
+          description: The ID of the category to delete.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Category deleted successfully.
+        "404":
+          description: Category not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /category_assets:
+    get:
+      tags:
+        - Category Assets
+      summary: Get All Category Assets
+      description: Retrieve a list of all category assets defined in the PIM.
+      responses:
+        "200":
+          description: A list of category assets.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CategoryAsset"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Category Assets
+      summary: Create a Category Asset
+      description: Create a new category asset in the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoryAsset"
+      responses:
+        "201":
+          description: Category asset created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryAsset"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /category_assets/{category_asset_id}:
+    get:
+      tags:
+        - Category Assets
+      summary: Get a Specific Category Asset
+      description: Retrieve details of a specific category asset by its ID.
+      parameters:
+        - name: category_asset_id
+          in: path
+          required: true
+          description: The ID of the category asset to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified category asset.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryAsset"
+        "404":
+          description: Category asset not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Category Assets
+      summary: Update a Specific Category Asset
+      description: Update an existing category asset by its ID.
+      parameters:
+        - name: category_asset_id
+          in: path
+          required: true
+          description: The ID of the category asset to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoryAsset"
+      responses:
+        "200":
+          description: Category asset updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryAsset"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Category asset not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Category Assets
+      summary: Delete a Specific Category Asset
+      description: This endpoint allows for the deletion of a specific category asset by its ID.
+      parameters:
+        - name: category_asset_id
+          in: path
+          required: true
+          description: The ID of the category asset to delete.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Category asset deleted successfully.
+        "404":
+          description: Category asset not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+
+  /categories/{category_id}/channel/{channel_id}:
+    post:
+      tags:
+        - Web ID
+      summary: Update or Create Web ID
+      description: Update an existing web ID or create a new one.
+      parameters:
+        - name: category_id
+          in: path
+          required: true
+          description: The ID of the cattegory
+          schema:
+            type: string
+        - name: channel_id
+          in: path
+          required: true
+          description: the ID of the channel
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebId"
+      responses:
+        "200":
+          description: Web ID updated or created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebId"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /channels:
+    get:
+      tags:
+        - Channels
+      summary: Get All Channels
+      description: Retrieve a list of all channels defined in the PIM.
+      responses:
+        "200":
+          description: A list of channels.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Channel"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /channels/{channel_id}:
+    get:
+      tags:
+        - Channels
+      summary: Get a Specific Channel
+      description: Retrieve details of a specific channel by its ID.
+      parameters:
+        - name: channel_id
+          in: path
+          required: true
+          description: The ID of the channel to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified channel.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Channel"
+        "404":
+          description: Channel not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /display_groups:
+    get:
+      tags:
+        - Display Groups
+      summary: Get All Display Groups
+      description: Retrieve a list of all display groups defined in the PIM.
+      responses:
+        "200":
+          description: A list of display groups.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DisplayGroup"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Display Groups
+      summary: Create a Display Group
+      description: Create a new display group in the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DisplayGroup"
+      responses:
+        "201":
+          description: Display group created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DisplayGroup"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /display_groups/{display_group_id}:
+    get:
+      tags:
+        - Display Groups
+      summary: Get a Specific Display Group
+      description: Retrieve details of a specific display group by its ID.
+      parameters:
+        - name: display_group_id
+          in: path
+          required: true
+          description: The ID of the display group to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified display group.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DisplayGroup"
+        "404":
+          description: Display group not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Display Groups
+      summary: Update a Specific Display Group
+      description: Update an existing display group by its ID.
+      parameters:
+        - name: display_group_id
+          in: path
+          required: true
+          description: The ID of the display group to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DisplayGroup"
+      responses:
+        "200":
+          description: Display group updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DisplayGroup"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Display group not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /exports/{export_id}:
+    get:
+      tags:
+        - Exports
+      summary: Get Export File and Status
+      description: Retrieve the file and status of a specific export by its ID.
+      parameters:
+        - name: export_id
+          in: path
+          required: true
+          description: The ID of the export to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified export, including file and status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExportDetails"
+        "404":
+          description: Export not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /generic_entities:
+    get:
+      tags:
+        - Generic Entities
+      summary: Get All Generic Entities
+      description: Retrieve a list of all generic entities defined in the PIM.
+      responses:
+        "200":
+          description: A list of generic entities.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GenericEntity"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Generic Entities
+      summary: Create a Generic Entity
+      description: Create a new generic entity in the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenericEntity"
+      responses:
+        "201":
+          description: Generic entity created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEntity"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /generic_entities/{generic_entity_id}:
+    get:
+      tags:
+        - Generic Entities
+      summary: Get a Specific Generic Entity
+      description: Retrieve details of a specific generic entity by its ID.
+      parameters:
+        - name: generic_entity_id
+          in: path
+          required: true
+          description: The ID of the generic entity to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified generic entity.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEntity"
+        "404":
+          description: Generic entity not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Generic Entities
+      summary: Update a Specific Generic Entity
+      description: Update an existing generic entity by its ID.
+      parameters:
+        - name: generic_entity_id
+          in: path
+          required: true
+          description: The ID of the generic entity to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenericEntity"
+      responses:
+        "200":
+          description: Generic entity updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericEntity"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Generic entity not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Generic Entities
+      summary: Delete a Specific Generic Entity
+      description: This endpoint allows for the deletion of a specific generic entity by its ID.
+      parameters:
+        - name: generic_entity_id
+          in: path
+          required: true
+          description: The ID of the generic entity to delete.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Generic entity deleted successfully.
+        "404":
+          description: Generic entity not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /generic-entities/{generic_entity_id}/concrete_entities:
+    get:
+      tags:
+        - Generic Entities
+        - Concrete Entities
+      summary: Get Generic Entity Concrete Entities
+      description: Retrieve a list of all concrete entities associated with a specific generic entity.
+      parameters:
+        - name: generic_entity_id
+          in: path
+          required: true
+          description: The ID of the generic entity whose concrete entities are to be retrieved.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of concrete entities associated with the specified generic entity.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConcreteEntity"
+        "404":
+          description: Generic entity not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /generic-entities/{ID}/concrete-entities:
+    post:
+      tags:
+        - Generic Entities
+        - Concrete Entities
+      summary: Create a Concrete Entity
+      description: This endpoint creates a concrete entity for a specific generic entity.
+      parameters:
+        - name: ID
+          in: path
+          required: true
+          description: The ID of the generic entity for which you want to create a concrete entity.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: "#/components/schemas/ConcreteEntity"
+      responses:
+        "201":
+          description: Concrete entity created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  concrete_entity:
+                    $ref: "#/components/schemas/ConcreteEntity"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /generic_entities/{generic_entity_id}/concrete-entities/{concrete_entity_id}:
+    get:
+      tags:
+        - Concrete Entities
+      summary: Get a Specific Concrete Entity
+      description: Retrieve details of a specific concrete entity by its ID.
+      parameters:
+        - name: concrete_entity_id
+          in: path
+          required: true
+          description: The ID of the concrete entity to retrieve.
+          schema:
+            type: string
+        - name: generic_entity_id
+          in: path
+          required: true
+          description: The ID of the generic entity.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified concrete entity.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConcreteEntity"
+        "404":
+          description: Concrete entity not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Generic Entities
+        - Concrete Entities
+      summary: Delete a Specific Concrete Entity
+      description: This endpoint deletes a specific concrete entity associated with a generic entity.
+      parameters:
+        - name: generic_entity_id
+          in: path
+          required: true
+          description: The ID of the generic entity from which you're deleting the concrete entity.
+          schema:
+            type: string
+        - name: concrete_entity_id
+          in: path
+          required: true
+          description: The ID of the concrete entity to delete.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Concrete entity deleted successfully.
+        "404":
+          description: Concrete entity or generic entity not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Generic Entities
+        - Concrete Entities
+      summary: Update a Concrete Entity
+      description: This endpoint updates a specific concrete entity.
+      parameters:
+        - name: generic_entity_id
+          in: path
+          required: true
+          description: The ID of the generic entity to which the concrete entity is attached.
+          schema:
+            type: string
+        - name: concrete_entity_id
+          in: path
+          required: true
+          description: The ID of the concrete entity to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConcreteEntity"
+      responses:
+        "200":
+          description: Concrete entity updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConcreteEntity"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Concrete entity or generic entity not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /options:
+    get:
+      tags:
+        - Options
+      summary: Get All Options
+      description: Retrieve a list of all options defined in the PIM.
+      responses:
+        "200":
+          description: A list of options.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Option"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Options
+      summary: Create an Option
+      description: Create a new option in the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Option"
+      responses:
+        "201":
+          description: Option created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Option"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /options/{option_id}:
+    get:
+      tags:
+        - Options
+      summary: Get a Specific Option
+      description: Retrieve details of a specific option by its ID.
+      parameters:
+        - name: option_id
+          in: path
+          required: true
+          description: The ID of the option to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified option.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Option"
+        "404":
+          description: Option not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Options
+      summary: Update a Specific Option
+      description: Update an existing option by its ID.
+      parameters:
+        - name: option_id
+          in: path
+          required: true
+          description: The ID of the option to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Option"
+
+      responses:
+        "200":
+          description: Option updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Option"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Option not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Options
+      summary: Delete a Specific Option
+      description: This endpoint allows for the deletion of a specific option by its ID.
+      parameters:
+        - name: option_id
+          in: path
+          required: true
+          description: The ID of the option to delete.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Option deleted successfully.
+        "404":
+          description: Option not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /option-values/{option_value_id}:
+    get:
+      tags:
+        - Option Values
+      summary: Get a Specific Option Value
+      description: Retrieve details of a specific option value by its ID.
+      parameters:
+        - name: option_value_id
+          in: path
+          required: true
+          description: The ID of the option value to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified option value.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OptionValue"
+        "404":
+          description: Option value not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Option Values
+      summary: Update a Specific Option Value
+      description: Update an existing option value by its ID.
+      parameters:
+        - name: option_value_id
+          in: path
+          required: true
+          description: The ID of the option value to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/OptionValue"
+      responses:
+        "200":
+          description: Option value updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OptionValue"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Option value not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Option Values
+      summary: Delete a Specific Option Value
+      description: This endpoint allows for the deletion of a specific option value by its ID.
+      parameters:
+        - name: option_value_id
+          in: path
+          required: true
+          description: The ID of the option value to delete.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Option value deleted successfully.
+        "404":
+          description: Option value not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /option-values:
+    post:
+      tags:
+        - Option Values
+      summary: Create an Option Value
+      description: Create a new option value in the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OptionValue"
+      responses:
+        "201":
+          description: Option value created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OptionValue"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /option-sets:
+    get:
+      tags:
+        - Option Sets
+      summary: Get All Option Sets
+      description: Retrieve a list of all option sets defined in the PIM.
+      responses:
+        "200":
+          description: A list of option sets.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OptionSet"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Option Sets
+      summary: Create an Option Set
+      description: Create a new option set in the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/OptionSet"
+      responses:
+        "201":
+          description: Option set created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OptionSet"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /option-sets/{option_set_id}:
+    get:
+      tags:
+        - Option Sets
+      summary: Get a Specific Option Set
+      description: Retrieve details of a specific option set by its ID.
+      parameters:
+        - name: option_set_id
+          in: path
+          required: true
+          description: The ID of the option set to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified option set.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OptionSet"
+        "404":
+          description: Option set not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Option Sets
+      summary: Update a Specific Option Set
+      description: Update an existing option set by its ID.
+      parameters:
+        - name: option_set_id
+          in: path
+          required: true
+          description: The ID of the option set to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/OptionSet"
+      responses:
+        "200":
+          description: Option set updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OptionSet"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Option set not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /option-set-options:
+    get:
+      tags:
+        - Option Set Options
+      summary: Get All Option Set Options
+      description: Retrieve a list of all option set options defined in the PIM.
+      responses:
+        "200":
+          description: A list of option set options.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OptionSetOption"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /option-set-options/{option_set_option_id}:
+    put:
+      tags:
+        - Option Set Options
+      summary: Create or Update an Option Set Option
+      description: Create a new option set option or update an existing one by its ID.
+      parameters:
+        - name: option_set_option_id
+          in: path
+          required: false
+          description: The ID of the option set option to update. Omit this parameter to create a new option set option.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/OptionSetOption"
+      responses:
+        "200":
+          description: Option set option updated successfully.
+        "201":
+          description: Option set option created successfully.
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Option set option not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Option Set Options
+      summary: Delete a Specific Option Set Option
+      description: This endpoint allows for the deletion of a specific option set option by its ID.
+      parameters:
+        - name: option_set_option_id
+          in: path
+          required: true
+          description: The ID of the option set option to delete.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Option set option deleted successfully.
+        "404":
+          description: Option set option not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /pages:
+    get:
+      tags:
+        - Pages
+      summary: Get All Pages
+      description: Retrieve a list of all pages defined in the PIM.
+      responses:
+        "200":
+          description: A list of pages.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Page"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Pages
+      summary: Create a Page
+      description: Create a new page in the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/Page"
+      responses:
+        "201":
+          description: Page created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Page"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /pages/{page_id}:
+    get:
+      tags:
+        - Pages
+      summary: Get a Specific Page
+      description: Retrieve details of a specific page by its ID.
+      parameters:
+        - name: page_id
+          in: path
+          required: true
+          description: The ID of the page to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified page.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Page"
+        "404":
+          description: Page not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Pages
+      summary: Update a Specific Page
+      description: Update an existing page by its ID.
+      parameters:
+        - name: page_id
+          in: path
+          required: true
+          description: The ID of the page to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/Page"
+  /page-assets:
+    get:
+      tags:
+        - Page Assets
+      summary: Get All Page Assets
+      description: Retrieve a list of all page assets defined in the PIM.
+      responses:
+        "200":
+          description: A list of page assets.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PageAsset"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /page-assets/{page_asset_id}:
+    get:
+      tags:
+        - Page Assets
+      summary: Get a Specific Page Asset
+      description: Retrieve details of a specific page asset by its ID.
+      parameters:
+        - name: page_asset_id
+          in: path
+          required: true
+          description: The ID of the page asset to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified page asset.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageAsset"
+        "404":
+          description: Page asset not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+
+# COMPONENTS
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >
+        Bearer authentication with a token. Prepend 'Bearer ' to the token. 
+        Example for testing: 'Bearer exampleApiKey123'
+  schemas:
+    Ping:
+      type: object
+      properties:
+        time:
+          type: string
+          format: date-time
+          example: "Tue Feb 7 19:05:03 UTC 2017"
+    Attribute:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper Attribute ID
+        name:
+          type: string
+          description: Attribute name (must be unique)
+        type:
+          type: string
+          enum: [selectbox, date, text, textarea, multiselect]
+        note:
+          type: string
+          description: User information about the attribute
+        display_group:
+          type: string
+          description: Used for display grouping in the PIM UI
+        sort_order:
+          type: integer
+          description: The sort order for display
+        publish:
+          type: boolean
+          description: Whether to publish the attribute
+        version_id:
+          type: string
+          description: The ID of the version
+        created_at:
+          type: string
+          format: date-time
+          description: Time the attribute was created (read only)
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Time the attribute was updated (read only)
+          readOnly: true
+    AttributeTypeValue:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper attribute type value ID.
+        attribute_id:
+          type: string
+          description: ID of the attribute to which the type value belongs.
+        value:
+          type: string
+          description: Type value (e.g., for a drop-down list).
+        version_id:
+          type: string
+          description: The ID of the version.
+        created_at:
+          type: string
+          format: date-time
+          description: Time the type value was created (read only).
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Time the type value was updated (read only).
+          readOnly: true
+      required:
+        - id
+        - attribute_id
+        - value
+    AttributeSet:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper Attribute Set ID.
+        name:
+          type: string
+          description: Attribute Set name (must be unique).
+        sort_order:
+          type: integer
+          description: The sort order for display.
+      required:
+        - id
+        - name
+    AttributeSetAttribute:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper attribute set attribute ID.
+        attribute_id:
+          type: string
+          description: ID of the attribute.
+        attribute_set_id:
+          type: string
+          description: ID of the attribute set.
+      required:
+        - id
+        - attribute_id
+        - attribute_set_id
+    Block:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper Block ID.
+        name:
+          type: string
+          description: Name of the block.
+        slug:
+          type: string
+          description: Slug for the block, typically used in URLs.
+        content:
+          type: string
+          description: Content of the block, which could include text, HTML, or other data.
+      required:
+        - id
+        - name
+        - slug
+        - content
+    BlockAsset:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper block asset ID.
+        block_id:
+          type: string
+          description: ID of the block to which the asset belongs.
+        uri:
+          type: string
+          description: URI of the asset.
+        alttext:
+          type: string
+          description: Image alternate text, used for accessibility.
+        sort_order:
+          type: integer
+          description: Sort order of the asset within the block.
+        thumbnail:
+          type: boolean
+          description: Indicates whether the asset is the thumbnail for the block.
+      required:
+        - id
+        - block_id
+        - uri
+    Brand:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper Brand ID.
+        name:
+          type: string
+          description: Name of the brand.
+        desc:
+          type: string
+          description: Description of the brand.
+        seo_meta_desc:
+          type: string
+          description: Meta description for SEO.
+        seo_meta_keywords:
+          type: string
+          description: Comma-separated list of meta keywords for SEO.
+        seo_meta_title:
+          type: string
+          description: Meta page title for SEO.
+        search_keywords:
+          type: string
+          description: Comma-separated list of search keywords associated with the brand.
+      required:
+        - id
+        - name
+    BrandAsset:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper Brand asset ID.
+        brand_id:
+          type: string
+          description: ID of the brand to which the asset belongs.
+        uri:
+          type: string
+          description: URI of the asset.
+        alttext:
+          type: string
+          description: Image alternate text, used for accessibility.
+        thumbnail:
+          type: boolean
+          description: Indicates whether the asset is the thumbnail for the brand.
+      required:
+        - id
+        - brand_id
+        - uri
+    BrandAttribute:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper Brand attribute ID.
+        brand_id:
+          type: string
+          description: ID of the brand to which the attribute belongs.
+        name:
+          type: string
+          description: Name of the attribute.
+        value:
+          type: string
+          description: Value of the attribute.
+        type:
+          type: string
+          description: Type of the attribute (e.g., text, number, date).
+      required:
+        - id
+        - brand_id
+        - name
+        - value
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper Category ID.
+        name:
+          type: string
+          description: Name of the category.
+        desc:
+          type: string
+          description: Description of the category.
+        parent_id:
+          type: string
+          description: ID of the parent category, if any.
+        seo_meta_desc:
+          type: string
+          description: Meta description for SEO.
+        seo_meta_keywords:
+          type: string
+          description: Comma-separated list of meta keywords for SEO.
+        seo_meta_title:
+          type: string
+          description: Meta page title for SEO.
+      required:
+        - id
+        - name
+    CategoryAsset:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper Category asset ID.
+        category_id:
+          type: string
+          description: ID of the category to which the asset belongs.
+        uri:
+          type: string
+          description: URI of the asset.
+        alttext:
+          type: string
+          description: Image alternate text, used for accessibility.
+        thumbnail:
+          type: boolean
+          description: Indicates whether the asset is the thumbnail for the category.
+      required:
+        - id
+        - category_id
+        - uri
+    WebId:
+      type: object
+      properties:
+        webId:
+          type: string
+          description: The web ID to be updated or created.
+      required:
+        - webId
+    Channel:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper Channel ID.
+        channel_name:
+          type: string
+          description: Name of the channel.
+        sync:
+          type: boolean
+          description: Whether the channel is currently enabled.
+        price_base:
+          type: string
+          description: Code for price book base for use on channel.
+        inventory_location:
+          type: string
+          description: Code for base inventory for use on channel.
+      required:
+        - id
+        - channel_name
+    DisplayGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper Display Group ID.
+        name:
+          type: string
+          description: Name of the display group.
+        sort_order:
+          type: integer
+          description: The sort order for display.
+        is_visible:
+          type: boolean
+          description: Whether to display the display group.
+      required:
+        - id
+        - name
+    ExportDetails:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the export.
+        status:
+          type: string
+          description: The status of the export (e.g., pending, completed, failed).
+        file_url:
+          type: string
+          description: The URL to download the export file, if available.
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the export was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: The timestamp when the export status was last updated.
+      required:
+        - id
+        - status
+    GenericEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper generic entity ID.
+        name:
+          type: string
+          description: Name of the generic entity.
+        description:
+          type: string
+          description: Description of the generic entity.
+        is_tree:
+          type: boolean
+          description: Whether to display the listing as a flat table or nested view.
+        is_product_attribute:
+          type: boolean
+          description: Whether the generic entity is selectable in the product details.
+        priority:
+          type: integer
+          description: Generic entity priority.
+        parent_id:
+          type: string
+          description: ID of the parent generic entity (set to null if root generic entity).
+        publishable:
+          type: boolean
+          description: Whether the generic entity can be published to channels.
+        display_on_navigation:
+          type: boolean
+          description: Whether the generic entity gets displayed on the navigation bar.
+      required:
+        - id
+        - name
+        - parent_id
+    ConcreteEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Concrete entity ID.
+        name:
+          type: string
+          description: Name of the concrete entity.
+        parent_id:
+          type: string
+          description: ID of the parent concrete entity.
+        generic_entity_id:
+          type: string
+          description: ID of the generic entity to which the concrete entity is attached.
+        priority:
+          type: integer
+          description: Concrete entity priority.
+        slug:
+          type: string
+          description: Concrete entity slug.
+      required:
+        - id
+        - name
+        - generic_entity_id
+    Option:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper Option ID.
+        name:
+          type: string
+          description: Name of the option.
+      required:
+        - id
+        - name
+    OptionValue:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper option value ID.
+        option_id:
+          type: string
+          description: ID of the option to which the value belongs.
+        value:
+          type: string
+          description: Value of the Option Value.
+        label:
+          type: string
+          description: Label of the Option Value.
+        sort_order:
+          type: integer
+          description: Sort order for the value.
+        is_default:
+          type: boolean
+          description: Indicates if the option value is the default.
+      required:
+        - id
+        - option_id
+        - value
+    OptionSet:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper Option Set ID.
+        name:
+          type: string
+          description: Name of the Option Set.
+      required:
+        - id
+        - name
+    OptionSetOption:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper option set option ID.
+        option_id:
+          type: integer
+          description: ID of the option.
+        option_set_id:
+          type: integer
+          description: ID of the option set.
+        sort_order:
+          type: integer
+          description: Sort order for the option within the option set.
+      required:
+        - id
+        - option_id
+        - option_set_id
+    Page:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper Page ID.
+        name:
+          type: string
+          description: Name of the page.
+        slug:
+          type: string
+          description: Page slug for URL.
+        content:
+          type: string
+          description: HTML content of the page.
+        mobile_body:
+          type: string
+          description: Mobile optimized HTML content.
+        url:
+          type: string
+          description: URL of the page.
+        has_mobile_version:
+          type: boolean
+          description: Indicates if the page has a mobile version.
+        is_customers_only:
+          type: boolean
+          description: Indicates if the page is restricted to logged-in customers.
+        is_homepage:
+          type: boolean
+          description: Indicates if the page is set as the homepage.
+        is_visible:
+          type: boolean
+          description: Indicates if the page is visible.
+        seo_meta_desc:
+          type: string
+          description: Meta description for SEO.
+        seo_meta_keywords:
+          type: string
+          description: Meta keywords for SEO.
+        seo_meta_title:
+          type: string
+          description: Meta page title for SEO.
+        search_keywords:
+          type: string
+          description: Comma-separated list of search keywords.
+      required:
+        - id
+        - name
+    PageAsset:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper page asset ID.
+        page_id:
+          type: string
+          description: ID of the page to which the asset belongs.
+        uri:
+          type: string
+          description: URI of the asset.
+        alttext:
+          type: string
+          description: Image alternate text.
+        thumbnail:
+          type: boolean
+          description: Indicates whether the asset is the thumbnail.
+      required:
+        - id
+        - page_id
+        - uri
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper Product ID.
+        name:
+          type: string
+          description: Name of the product.
+        sku:
+          type: string
+          description: Unique SKU of the product.
+        product_url:
+          type: string
+          description: URL of the product.
+        style_id:
+          type: string
+          description: Style ID associated with the product.
+        brand_id:
+          type: string
+          description: Brand ID associated with the product.
+        parent_id:
+          type: string
+          description: Parent product ID for variant child products.
+        option_set_id:
+          type: string
+          description: Option set ID associated with the product.
+        option_values:
+          type: array
+          items:
+            type: string
+          description: Required for variant child products.
+        is_bundle:
+          type: boolean
+          description: Indicates if the product is the top of a bundle.
+        bundle_id:
+          type: string
+          description: Bundle ID that the product belongs to.
+        category_ids:
+          type: array
+          items:
+            type: string
+          description: Category IDs associated with the product.
+        children:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
+          description: Child product objects (READ ONLY).
+        is_visible:
+          type: boolean
+          description: Indicates if the product is visible.
+        enabled:
+          type: boolean
+          description: Indicates if the product is enabled.
+        desc_short:
+          type: string
+          description: Master short description of the product.
+        desc_long:
+          type: string
+          description: Master long description of the product.
+        prices:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductPrice"
+          description: Product price objects (READ ONLY).
+        inventory:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductInventory"
+          description: Product inventory objects (READ ONLY).
+      required:
+        - id
+        - name
+        - sku

@@ -1,0 +1,1006 @@
+"openapi": "3.0.3"
+"info":
+  "version": "1.0"
+  "title": "Jasper API"
+"servers":
+  - "url": "{protocol}://{server}/api/v1"
+    "description": "Your PIM API server"
+    "variables":
+      "protocol":
+        "default": "https"
+        "enum":
+          - "https"
+          - "http"
+        "description": "The API protocol"
+      "server":
+        "default": "yourpim.com"
+        "description": "Your PIM API server"
+"tags":
+  - "name": "Authentication"
+    "description": "Jasper uses API keys to allow access to the API. Contact your account representative to receive a key for your PIM. Jasper expects the API key to be included in the header of all API requests. Click 'Authorize' to generate an example.\n"
+    "externalDocs":
+      "description": "main docs"
+      "url": "https://api.jasperpim.com/#authentication"
+  - "name": "Admin"
+    "description": "This endpoint returns the current PIM server time, confirming authentication."
+    "externalDocs":
+      "description": "main docs"
+      "url": "https://api.jasperpim.com/#admin"
+  - "name": "Attributes"
+  - "name": "Attribute Type Values"
+  - "name": "Attribute sets"
+  - "name": "Attribute Set attributes"
+  - "name": "Blocks"
+  - "name": "Block Assets"
+  - "name": "Brands"
+  - "name": "Brand Assets"
+  - "name": "Brand Attributes"
+  - "name": "Categories"
+  - "name": "Category Assets"
+  - "name": "Category Channels"
+  - "name": "Channels"
+  - "name": "Display Groups"
+  - "name": "Exports"
+  - "name": "Generic Entities"
+  - "name": "Options"
+  - "name": "Option Values"
+  - "name": "Option Sets"
+  - "name": "Option Set Options"
+  - "name": "Pages"
+  - "name": "Page Assets"
+  - "name": "Produtct Assets"
+  - "name": "Product Barcodes"
+  - "name": "Product Categories"
+  - "name": "Product Prices"
+  - "name": "Product Inventory"
+  - "name": "Product Attributes"
+  - "name": "Product Channels"
+  - "name": "Product Relations"
+  - "name": "Product Relations Attributes"
+  - "name": "Product Tags"
+  - "name": "Template"
+  - "name": "Webhooks"
+  - "name": "Errors"
+"paths":
+  "/ping":
+    "get":
+      "responses":
+        "200":
+          "description": "Successful request returns current PIM server time."
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "time":
+                    "type": "string"
+                    "format": "date-time"
+                    "example": "Tue Feb 7 19:05:03 UTC 2017"
+        "401":
+          "description": "Unauthorized. Invalid or missing authorization token."
+      "security":
+        - "bearerAuth": []
+  "/attributes":
+    "get":
+      "tags":
+        - "Attributes"
+      "responses":
+        "200":
+          "description": "This endpoint retrieves all attributes."
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "id":
+                    "type": "string"
+                    "description": "Jasper Attribute ID"
+                  "name":
+                    "type": "string"
+                    "description": "Attribute name (must be unique)"
+                  "type":
+                    "type": "string"
+                    "enum":
+                      - "selectbox"
+                      - "date"
+                      - "text"
+                      - "textarea"
+                      - "multiselect"
+                  "note":
+                    "type": "string"
+                    "description": "User information about the attribute"
+                  "display_group":
+                    "type": "string"
+                    "description": "Used for display grouping in the PIM UI"
+                  "sort_order":
+                    "type": "integer"
+                    "description": "The sort order for display"
+                  "publish":
+                    "type": "boolean"
+                    "description": "Whether to publish the attribute"
+                  "version_id":
+                    "type": "string"
+                    "description": "The ID of the version"
+                  "created_at":
+                    "type": "string"
+                    "format": "date-time"
+                    "description": "Time the attribute was created (read only)"
+                    "readOnly": true
+                  "updated_at":
+                    "type": "string"
+                    "format": "date-time"
+                    "description": "Time the attribute was updated (read only)"
+                    "readOnly": true
+        "401":
+          "description": "Unauthorized. Invalid or missing authorization token."
+      "security":
+        - "bearerAuth": []
+    "post":
+      "tags":
+        - "Attributes"
+      "summary": "Create an Attribute"
+      "description": "This endpoint allows for the creation of a new attribute."
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "properties":
+                "id":
+                  "type": "string"
+                  "description": "Jasper Attribute ID"
+                "name":
+                  "type": "string"
+                  "description": "Attribute name (must be unique)"
+                "type":
+                  "type": "string"
+                  "enum":
+                    - "selectbox"
+                    - "date"
+                    - "text"
+                    - "textarea"
+                    - "multiselect"
+                "note":
+                  "type": "string"
+                  "description": "User information about the attribute"
+                "display_group":
+                  "type": "string"
+                  "description": "Used for display grouping in the PIM UI"
+                "sort_order":
+                  "type": "integer"
+                  "description": "The sort order for display"
+                "publish":
+                  "type": "boolean"
+                  "description": "Whether to publish the attribute"
+                "version_id":
+                  "type": "string"
+                  "description": "The ID of the version"
+                "created_at":
+                  "type": "string"
+                  "format": "date-time"
+                  "description": "Time the attribute was created (read only)"
+                  "readOnly": true
+                "updated_at":
+                  "type": "string"
+                  "format": "date-time"
+                  "description": "Time the attribute was updated (read only)"
+                  "readOnly": true
+      "responses":
+        "201":
+          "description": "Attribute created successfully."
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "id":
+                    "type": "string"
+                    "description": "Jasper Attribute ID"
+                  "name":
+                    "type": "string"
+                    "description": "Attribute name (must be unique)"
+                  "type":
+                    "type": "string"
+                    "enum":
+                      - "selectbox"
+                      - "date"
+                      - "text"
+                      - "textarea"
+                      - "multiselect"
+                  "note":
+                    "type": "string"
+                    "description": "User information about the attribute"
+                  "display_group":
+                    "type": "string"
+                    "description": "Used for display grouping in the PIM UI"
+                  "sort_order":
+                    "type": "integer"
+                    "description": "The sort order for display"
+                  "publish":
+                    "type": "boolean"
+                    "description": "Whether to publish the attribute"
+                  "version_id":
+                    "type": "string"
+                    "description": "The ID of the version"
+                  "created_at":
+                    "type": "string"
+                    "format": "date-time"
+                    "description": "Time the attribute was created (read only)"
+                    "readOnly": true
+                  "updated_at":
+                    "type": "string"
+                    "format": "date-time"
+                    "description": "Time the attribute was updated (read only)"
+                    "readOnly": true
+        "400":
+          "description": "Bad request. Invalid input parameters."
+        "401":
+          "description": "Unauthorized. Invalid or missing authorization token."
+      "security":
+        - "bearerAuth": []
+  "/attributes/version/{VERSION_ID}":
+    "get":
+      "tags":
+        - "Attributes"
+      "summary": "Retrieve Attributes by Version"
+      "description": "This endpoint retrieves all attributes of the specified version."
+      "parameters":
+        - "name": "VERSION_ID"
+          "in": "path"
+          "required": true
+          "description": "The ID of the version for which attributes are to be retrieved."
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "A list of attributes for the specified version."
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "properties":
+                    "id":
+                      "type": "string"
+                      "description": "Jasper Attribute ID"
+                    "name":
+                      "type": "string"
+                      "description": "Attribute name (must be unique)"
+                    "type":
+                      "type": "string"
+                      "enum":
+                        - "selectbox"
+                        - "date"
+                        - "text"
+                        - "textarea"
+                        - "multiselect"
+                    "note":
+                      "type": "string"
+                      "description": "User information about the attribute"
+                    "display_group":
+                      "type": "string"
+                      "description": "Used for display grouping in the PIM UI"
+                    "sort_order":
+                      "type": "integer"
+                      "description": "The sort order for display"
+                    "publish":
+                      "type": "boolean"
+                      "description": "Whether to publish the attribute"
+                    "version_id":
+                      "type": "string"
+                      "description": "The ID of the version"
+                    "created_at":
+                      "type": "string"
+                      "format": "date-time"
+                      "description": "Time the attribute was created (read only)"
+                      "readOnly": true
+                    "updated_at":
+                      "type": "string"
+                      "format": "date-time"
+                      "description": "Time the attribute was updated (read only)"
+                      "readOnly": true
+        "404":
+          "description": "Version not found"
+  "/attributes/{attribute_id}":
+    "get":
+      "tags":
+        - "Attributes"
+      "summary": "Retrieve a Specific Attribute"
+      "description": "This endpoint retrieves a specific attribute by its ID."
+      "parameters":
+        - "name": "attribute_id"
+          "in": "path"
+          "required": true
+          "description": "The ID of the attribute to retrieve."
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "Details of the specified attribute."
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "id":
+                    "type": "string"
+                    "description": "Jasper Attribute ID"
+                  "name":
+                    "type": "string"
+                    "description": "Attribute name (must be unique)"
+                  "type":
+                    "type": "string"
+                    "enum":
+                      - "selectbox"
+                      - "date"
+                      - "text"
+                      - "textarea"
+                      - "multiselect"
+                  "note":
+                    "type": "string"
+                    "description": "User information about the attribute"
+                  "display_group":
+                    "type": "string"
+                    "description": "Used for display grouping in the PIM UI"
+                  "sort_order":
+                    "type": "integer"
+                    "description": "The sort order for display"
+                  "publish":
+                    "type": "boolean"
+                    "description": "Whether to publish the attribute"
+                  "version_id":
+                    "type": "string"
+                    "description": "The ID of the version"
+                  "created_at":
+                    "type": "string"
+                    "format": "date-time"
+                    "description": "Time the attribute was created (read only)"
+                    "readOnly": true
+                  "updated_at":
+                    "type": "string"
+                    "format": "date-time"
+                    "description": "Time the attribute was updated (read only)"
+                    "readOnly": true
+        "404":
+          "description": "Attribute not found."
+      "security":
+        - "bearerAuth": []
+    "put":
+      "tags":
+        - "Attributes"
+      "summary": "Update a Specific Attribute"
+      "description": "This endpoint allows for updating an existing attribute by its ID."
+      "parameters":
+        - "name": "attribute_id"
+          "in": "path"
+          "required": true
+          "description": "The ID of the attribute to update."
+          "schema":
+            "type": "string"
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "properties":
+                "id":
+                  "type": "string"
+                  "description": "Jasper Attribute ID"
+                "name":
+                  "type": "string"
+                  "description": "Attribute name (must be unique)"
+                "type":
+                  "type": "string"
+                  "enum":
+                    - "selectbox"
+                    - "date"
+                    - "text"
+                    - "textarea"
+                    - "multiselect"
+                "note":
+                  "type": "string"
+                  "description": "User information about the attribute"
+                "display_group":
+                  "type": "string"
+                  "description": "Used for display grouping in the PIM UI"
+                "sort_order":
+                  "type": "integer"
+                  "description": "The sort order for display"
+                "publish":
+                  "type": "boolean"
+                  "description": "Whether to publish the attribute"
+                "version_id":
+                  "type": "string"
+                  "description": "The ID of the version"
+                "created_at":
+                  "type": "string"
+                  "format": "date-time"
+                  "description": "Time the attribute was created (read only)"
+                  "readOnly": true
+                "updated_at":
+                  "type": "string"
+                  "format": "date-time"
+                  "description": "Time the attribute was updated (read only)"
+                  "readOnly": true
+      "responses":
+        "200":
+          "description": "Attribute updated successfully."
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "id":
+                    "type": "string"
+                    "description": "Jasper Attribute ID"
+                  "name":
+                    "type": "string"
+                    "description": "Attribute name (must be unique)"
+                  "type":
+                    "type": "string"
+                    "enum":
+                      - "selectbox"
+                      - "date"
+                      - "text"
+                      - "textarea"
+                      - "multiselect"
+                  "note":
+                    "type": "string"
+                    "description": "User information about the attribute"
+                  "display_group":
+                    "type": "string"
+                    "description": "Used for display grouping in the PIM UI"
+                  "sort_order":
+                    "type": "integer"
+                    "description": "The sort order for display"
+                  "publish":
+                    "type": "boolean"
+                    "description": "Whether to publish the attribute"
+                  "version_id":
+                    "type": "string"
+                    "description": "The ID of the version"
+                  "created_at":
+                    "type": "string"
+                    "format": "date-time"
+                    "description": "Time the attribute was created (read only)"
+                    "readOnly": true
+                  "updated_at":
+                    "type": "string"
+                    "format": "date-time"
+                    "description": "Time the attribute was updated (read only)"
+                    "readOnly": true
+        "400":
+          "description": "Bad request. Invalid input parameters."
+        "404":
+          "description": "Attribute not found."
+        "401":
+          "description": "Unauthorized. Invalid or missing authorization token."
+      "security":
+        - "bearerAuth": []
+    "delete":
+      "tags":
+        - "Attributes"
+      "summary": "Delete a Specific Attribute"
+      "description": "This endpoint allows for the deletion of a specific attribute by its ID."
+      "parameters":
+        - "name": "attribute_id"
+          "in": "path"
+          "required": true
+          "description": "The ID of the attribute to delete."
+          "schema":
+            "type": "string"
+      "responses":
+        "204":
+          "description": "Attribute deleted successfully."
+        "404":
+          "description": "Attribute not found."
+        "401":
+          "description": "Unauthorized. Invalid or missing authorization token."
+      "security":
+        - "bearerAuth": []
+  "/attributes/{attribute_id}/versions/{version_id}":
+    "get":
+      "tags":
+        - "Attributes"
+      "summary": "Retrieve a Specific Attribute by Version"
+      "description": "This endpoint retrieves a specific attribute by its ID for the specified version."
+      "parameters":
+        - "name": "attribute_id"
+          "in": "path"
+          "required": true
+          "description": "The ID of the attribute to retrieve."
+          "schema":
+            "type": "string"
+        - "name": "version_id"
+          "in": "path"
+          "required": true
+          "description": "The ID of the version for which the attribute is to be retrieved."
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "Details of the specified attribute for the given version."
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "id":
+                    "type": "string"
+                    "description": "Jasper Attribute ID"
+                  "name":
+                    "type": "string"
+                    "description": "Attribute name (must be unique)"
+                  "type":
+                    "type": "string"
+                    "enum":
+                      - "selectbox"
+                      - "date"
+                      - "text"
+                      - "textarea"
+                      - "multiselect"
+                  "note":
+                    "type": "string"
+                    "description": "User information about the attribute"
+                  "display_group":
+                    "type": "string"
+                    "description": "Used for display grouping in the PIM UI"
+                  "sort_order":
+                    "type": "integer"
+                    "description": "The sort order for display"
+                  "publish":
+                    "type": "boolean"
+                    "description": "Whether to publish the attribute"
+                  "version_id":
+                    "type": "string"
+                    "description": "The ID of the version"
+                  "created_at":
+                    "type": "string"
+                    "format": "date-time"
+                    "description": "Time the attribute was created (read only)"
+                    "readOnly": true
+                  "updated_at":
+                    "type": "string"
+                    "format": "date-time"
+                    "description": "Time the attribute was updated (read only)"
+                    "readOnly": true
+        "404":
+          "description": "Attribute or version not found."
+      "security":
+        - "bearerAuth": []
+    "delete":
+      "tags":
+        - "Attributes"
+      "summary": "Delete a Specific Attribute Version"
+      "description": "This endpoint allows for the deletion of a specific version of an attribute by its ID and version ID."
+      "parameters":
+        - "name": "attribute_id"
+          "in": "path"
+          "required": true
+          "description": "The ID of the attribute for which a version is to be deleted."
+          "schema":
+            "type": "string"
+        - "name": "version_id"
+          "in": "path"
+          "required": true
+          "description": "The ID of the attribute version to delete."
+          "schema":
+            "type": "string"
+      "responses":
+        "204":
+          "description": "Attribute version deleted successfully."
+        "404":
+          "description": "Attribute or attribute version not found."
+        "401":
+          "description": "Unauthorized. Invalid or missing authorization token."
+      "security":
+        - "bearerAuth": []
+    "put":
+      "tags":
+        - "Attributes"
+      "summary": "Update a Specific Attribute Version"
+      "description": "This endpoint allows for updating a specific version of an existing attribute by its ID and version ID."
+      "parameters":
+        - "name": "attribute_id"
+          "in": "path"
+          "required": true
+          "description": "The ID of the attribute to update."
+          "schema":
+            "type": "string"
+        - "name": "version_id"
+          "in": "path"
+          "required": true
+          "description": "The ID of the version of the attribute to update."
+          "schema":
+            "type": "string"
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "properties":
+                "id":
+                  "type": "string"
+                  "description": "Jasper Attribute ID"
+                "name":
+                  "type": "string"
+                  "description": "Attribute name (must be unique)"
+                "type":
+                  "type": "string"
+                  "enum":
+                    - "selectbox"
+                    - "date"
+                    - "text"
+                    - "textarea"
+                    - "multiselect"
+                "note":
+                  "type": "string"
+                  "description": "User information about the attribute"
+                "display_group":
+                  "type": "string"
+                  "description": "Used for display grouping in the PIM UI"
+                "sort_order":
+                  "type": "integer"
+                  "description": "The sort order for display"
+                "publish":
+                  "type": "boolean"
+                  "description": "Whether to publish the attribute"
+                "version_id":
+                  "type": "string"
+                  "description": "The ID of the version"
+                "created_at":
+                  "type": "string"
+                  "format": "date-time"
+                  "description": "Time the attribute was created (read only)"
+                  "readOnly": true
+                "updated_at":
+                  "type": "string"
+                  "format": "date-time"
+                  "description": "Time the attribute was updated (read only)"
+                  "readOnly": true
+      "responses":
+        "200":
+          "description": "Attribute version updated successfully."
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "id":
+                    "type": "string"
+                    "description": "Jasper Attribute ID"
+                  "name":
+                    "type": "string"
+                    "description": "Attribute name (must be unique)"
+                  "type":
+                    "type": "string"
+                    "enum":
+                      - "selectbox"
+                      - "date"
+                      - "text"
+                      - "textarea"
+                      - "multiselect"
+                  "note":
+                    "type": "string"
+                    "description": "User information about the attribute"
+                  "display_group":
+                    "type": "string"
+                    "description": "Used for display grouping in the PIM UI"
+                  "sort_order":
+                    "type": "integer"
+                    "description": "The sort order for display"
+                  "publish":
+                    "type": "boolean"
+                    "description": "Whether to publish the attribute"
+                  "version_id":
+                    "type": "string"
+                    "description": "The ID of the version"
+                  "created_at":
+                    "type": "string"
+                    "format": "date-time"
+                    "description": "Time the attribute was created (read only)"
+                    "readOnly": true
+                  "updated_at":
+                    "type": "string"
+                    "format": "date-time"
+                    "description": "Time the attribute was updated (read only)"
+                    "readOnly": true
+        "400":
+          "description": "Bad request. Invalid input parameters."
+        "404":
+          "description": "Attribute or version not found."
+        "401":
+          "description": "Unauthorized. Invalid or missing authorization token."
+      "security":
+        - "bearerAuth": []
+  "/attributes/{attribute_id}/type_values":
+    "get":
+      "tags":
+        - "Attribute Type Values"
+      "summary": "Get All Attribute Type Values"
+      "description": "Retrieve a list of all attribute type values defined in the PIM."
+      "parameters":
+        - "name": "attribute_id"
+          "in": "path"
+          "required": true
+          "description": "The ID of the attribute whose type values to retrieve"
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "A list of attribute type values."
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "properties":
+                    "id":
+                      "type": "string"
+                      "description": "Jasper attribute type value ID."
+                    "attribute_id":
+                      "type": "string"
+                      "description": "ID of the attribute to which the type value belongs."
+                    "value":
+                      "type": "string"
+                      "description": "Type value (e.g., for a drop-down list)."
+                    "version_id":
+                      "type": "string"
+                      "description": "The ID of the version."
+                    "created_at":
+                      "type": "string"
+                      "format": "date-time"
+                      "description": "Time the type value was created (read only)."
+                      "readOnly": true
+                    "updated_at":
+                      "type": "string"
+                      "format": "date-time"
+                      "description": "Time the type value was updated (read only)."
+                      "readOnly": true
+                  "required":
+                    - "id"
+                    - "attribute_id"
+                    - "value"
+        "401":
+          "description": "Unauthorized. Invalid or missing authorization token."
+  "/attributes/{attribute_id}/type_values/{type_value_id}":
+    "delete":
+      "tags":
+        - "Attribute Type Values"
+      "summary": "Delete a Specific Attribute Type Value"
+      "description": "This endpoint allows for the deletion of a specific attribute type value by its ID."
+      "parameters":
+        - "name": "attribute_id"
+          "in": "path"
+          "required": true
+          "description": "The ID of the attribute type value to delete."
+          "schema":
+            "type": "string"
+        - "name": "type_value_id"
+          "in": "path"
+          "required": true
+          "description": "the ID of the type value"
+          "schema":
+            "type": "string"
+      "responses":
+        "204":
+          "description": "Attribute type value deleted successfully."
+        "404":
+          "description": "Attribute type value not found."
+        "401":
+          "description": "Unauthorized. Invalid or missing authorization token."
+      "security":
+        - "bearerAuth": []
+  "/attribute_sets":
+    "get":
+      "summary": "Retrieve All Attribute Sets"
+      "description": "This endpoint retrieves all attribute sets."
+      "responses":
+        "200":
+          "description": "A list of all attribute sets."
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "properties":
+                    "id":
+                      "type": "string"
+                      "description": "Jasper Attribute ID"
+                    "name":
+                      "type": "string"
+                      "description": "Attribute name (must be unique)"
+                    "type":
+                      "type": "string"
+                      "enum":
+                        - "selectbox"
+                        - "date"
+                        - "text"
+                        - "textarea"
+                        - "multiselect"
+                    "note":
+                      "type": "string"
+                      "description": "User information about the attribute"
+                    "display_group":
+                      "type": "string"
+                      "description": "Used for display grouping in the PIM UI"
+                    "sort_order":
+                      "type": "integer"
+                      "description": "The sort order for display"
+                    "publish":
+                      "type": "boolean"
+                      "description": "Whether to publish the attribute"
+                    "version_id":
+                      "type": "string"
+                      "description": "The ID of the version"
+                    "created_at":
+                      "type": "string"
+                      "format": "date-time"
+                      "description": "Time the attribute was created (read only)"
+                      "readOnly": true
+                    "updated_at":
+                      "type": "string"
+                      "format": "date-time"
+                      "description": "Time the attribute was updated (read only)"
+                      "readOnly": true
+        "401":
+          "description": "Unauthorized. Invalid or missing authorization token."
+      "security":
+        - "bearerAuth": []
+  "/brands":
+    "get":
+      "summary": "Retrieve All Brands"
+      "description": "This endpoint retrieves all brands."
+      "responses":
+        "200":
+          "description": "A list of all brands."
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "properties":
+                    "id":
+                      "type": "string"
+                      "description": "Unique identifier for the brand"
+                    "name":
+                      "type": "string"
+                      "description": "Name of the brand"
+        "401":
+          "description": "Unauthorized. Invalid or missing authorization token."
+      "security":
+        - "bearerAuth": []
+  "/categories":
+    "get":
+      "summary": "Retrieve All Categories"
+      "description": "This endpoint retrieves all categories."
+      "responses":
+        "200":
+          "description": "A list of all categories."
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "properties":
+                    "id":
+                      "type": "string"
+                      "description": "Unique identifier for the category"
+                    "name":
+                      "type": "string"
+                      "description": "Name of the category"
+        "401":
+          "description": "Unauthorized. Invalid or missing authorization token."
+      "security":
+        - "bearerAuth": []
+"components":
+  "securitySchemes":
+    "bearerAuth":
+      "type": "http"
+      "scheme": "bearer"
+      "description": "Bearer authentication with a token. Prepend 'Bearer ' to the token.  Example for testing: 'Bearer exampleApiKey123'\n"
+  "schemas":
+    "Ping":
+      "type": "object"
+      "properties":
+        "time":
+          "type": "string"
+          "format": "date-time"
+          "example": "Tue Feb 7 19:05:03 UTC 2017"
+    "Attribute":
+      "type": "object"
+      "properties":
+        "id":
+          "type": "string"
+          "description": "Jasper Attribute ID"
+        "name":
+          "type": "string"
+          "description": "Attribute name (must be unique)"
+        "type":
+          "type": "string"
+          "enum":
+            - "selectbox"
+            - "date"
+            - "text"
+            - "textarea"
+            - "multiselect"
+        "note":
+          "type": "string"
+          "description": "User information about the attribute"
+        "display_group":
+          "type": "string"
+          "description": "Used for display grouping in the PIM UI"
+        "sort_order":
+          "type": "integer"
+          "description": "The sort order for display"
+        "publish":
+          "type": "boolean"
+          "description": "Whether to publish the attribute"
+        "version_id":
+          "type": "string"
+          "description": "The ID of the version"
+        "created_at":
+          "type": "string"
+          "format": "date-time"
+          "description": "Time the attribute was created (read only)"
+          "readOnly": true
+        "updated_at":
+          "type": "string"
+          "format": "date-time"
+          "description": "Time the attribute was updated (read only)"
+          "readOnly": true
+    "AttributeTypeValue":
+      "type": "object"
+      "properties":
+        "id":
+          "type": "string"
+          "description": "Jasper attribute type value ID."
+        "attribute_id":
+          "type": "string"
+          "description": "ID of the attribute to which the type value belongs."
+        "value":
+          "type": "string"
+          "description": "Type value (e.g., for a drop-down list)."
+        "version_id":
+          "type": "string"
+          "description": "The ID of the version."
+        "created_at":
+          "type": "string"
+          "format": "date-time"
+          "description": "Time the type value was created (read only)."
+          "readOnly": true
+        "updated_at":
+          "type": "string"
+          "format": "date-time"
+          "description": "Time the type value was updated (read only)."
+          "readOnly": true
+      "required":
+        - "id"
+        - "attribute_id"
+        - "value"
+    "Brand":
+      "type": "object"
+      "properties":
+        "id":
+          "type": "string"
+          "description": "Unique identifier for the brand"
+        "name":
+          "type": "string"
+          "description": "Name of the brand"
+    "Category":
+      "type": "object"
+      "properties":
+        "id":
+          "type": "string"
+          "description": "Unique identifier for the category"
+        "name":
+          "type": "string"
+          "description": "Name of the category"

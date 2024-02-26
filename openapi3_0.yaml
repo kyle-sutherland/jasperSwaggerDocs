@@ -1,0 +1,44 @@
+openapi: 3.0.3
+info:
+  version : "1.0"
+  title: Jasper API  
+servers:
+  - url: https://yourpim.com/api/v1
+tags:
+  - name: Authentication
+    description: Jasper uses API keys to allow access to the API. Contact your account representative to receive a key for your PIM.
+    externalDocs: 
+      description: main docs
+      url: https://api.jasperpim.com/#authentication
+  - name: Admin
+    description: This endpoint returns the current PIM server time, confirming authentication.
+    externalDocs:
+      description: main docs
+      url: https://api.jasperpim.com/#admin
+paths:
+  /ping:
+    get:
+      tags:
+        - Authentication
+        - Admin
+      requestBody:
+        content:
+          text/plain:
+            example: "Authorization: Bearer {token}"
+      responses:
+         '200':
+          description: Successful request returns current PIM server time.
+          content:
+            json: 
+              schema:
+                $ref: '#/components/schemas/Ping'
+
+components:
+  schemas:
+    Ping:
+      type: object
+      properties:
+        time:
+          type: string
+          format: date-time
+          example: Tue Feb 7 19:05:03 UTC 2017
