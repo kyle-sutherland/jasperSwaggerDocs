@@ -3021,6 +3021,905 @@ paths:
           description: Unauthorized. Invalid or missing authorization token.
       security:
         - bearerAuth: []
+  /product-assets:
+    get:
+      tags:
+        - Product Assets
+      summary: Get All Product Assets
+      description: Retrieve a list of all product assets defined in the PIM.
+      responses:
+        "200":
+          description: A list of product assets.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProductAsset"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Product Assets
+      summary: Create a Product Asset
+      description: Create a new product asset in the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+            $ref: "#/components/schemas/ProductAsset"
+      responses:
+        "201":
+          description: Product asset created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductAsset"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /product-assets/{product_asset_id}:
+    get:
+      tags:
+        - Product Assets
+      summary: Get a Specific Product Asset
+      description: Retrieve details of a specific product asset by its ID.
+      parameters:
+        - name: product_asset_id
+          in: path
+          required: true
+          description: The ID of the product asset to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified product asset.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductAsset"
+        "404":
+          description: Product asset not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Product Assets
+      summary: Update a Specific Product Asset
+      description: Update an existing product asset by its ID.
+      parameters:
+        - name: product_asset_id
+          in: path
+          required: true
+          description: The ID of the product asset to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+            $ref: "#/components/schemas/ProductAsset"
+      responses:
+        "200":
+          description: Product asset updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductAsset"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Product asset not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Product Assets
+      summary: Delete a Specific Product Asset
+      description: Delete an existing product asset by its ID.
+      parameters:
+        - name: product_asset_id
+          in: path
+          required: true
+          description: The ID of the product asset to delete.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Product asset deleted successfully.
+        "404":
+          description: Product asset not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/barcodes:
+    get:
+      tags:
+        - Product Barcodes
+      summary: Get All Product Barcodes
+      description: Retrieve all product barcodes for a specific product.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product whose barcodes to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of product barcodes.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  barcodes:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ProductBarcode"
+        "404":
+          description: Product not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Product Barcodes
+      summary: Create a Product Barcode
+      description: Create a new product barcode for a specific product.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product for which the barcode is being created.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+            $ref: "/components/schemas/ProductBarcodes"
+      responses:
+        "201":
+          description: Product barcode created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductBarcode"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/barcodes/{barcode_id}:
+    put:
+      tags:
+        - Product Barcodes
+      summary: Update a Product Barcode
+      description: Update an existing product barcode by its ID for a specific product.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product for which the barcode is being updated.
+          schema:
+            type: string
+        - name: barcode_id
+          in: path
+          required: true
+          description: The ID of the barcode to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: The type of this barcode (EAN, UPC-A, GTIN-13, ITF-14, Custom).
+                barcode:
+                  type: string
+                  description: The barcode number.
+              required:
+                - type
+                - barcode
+      responses:
+        "200":
+          description: Product barcode updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductBarcode"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Product or barcode not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Product Barcodes
+      summary: Delete a Product Barcode
+      description: Delete a specific product barcode by its ID for a specific product.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product for which the barcode is being deleted.
+          schema:
+            type: string
+        - name: barcode_id
+          in: path
+          required: true
+          description: The ID of the barcode to delete.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Product barcode deleted successfully.
+        "404":
+          description: Product or barcode not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/barcodes/upsert:
+    put:
+      tags:
+        - Product Barcodes
+      summary: Upsert Product Barcodes (with delete)
+      description: |
+        Upsert (update and/or insert) a list of given product barcodes for a specific product. 
+        If a product has barcodes that were not touched by this operation, those will be DELETED. 
+        Only the barcodes present in the request payload will remain on the product.
+
+        Note: For "UPC-A" we expect 12 digits. "ITF-14": 14 digits. "GTIN-13": 13 digits. "EAN": 13 digits. "Custom": any number of digits.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductBarcode"
+      responses:
+        "200":
+          description: Product barcodes upserted successfully. Barcodes not included in the request have been deleted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductBarcode"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Product not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Product Barcodes
+      summary: Upsert Product Barcodes (without delete)
+      description: |
+        Upsert (update and/or insert) a list of given product barcodes for a specific product. 
+        No barcode will be deleted with this endpoint.
+
+        Note: For "UPC-A" we expect 12 digits. "ITF-14": 14 digits. "GTIN-13": 13 digits. "EAN": 13 digits. "Custom": any number of digits.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product.
+          schema:
+            $ref: "#/components/schemas/ProductBarcode"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+      responses:
+        "200":
+          description: Product barcodes upserted successfully. No barcodes have been deleted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductBarcode"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Product not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/categories:
+    post:
+      tags:
+        - Product Categories
+      summary: Assign a Category to a Product
+      description: Assign a category to a product by specifying the category ID.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product to which the category will be assigned.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category_id:
+                  type: string
+                  description: The ID of the category to assign to the product.
+              required:
+                - category_id
+      responses:
+        "200":
+          description: Category assigned to the product successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_categories:
+                    $ref: "#/components/schemas/ProductCategory"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Product or category not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/prices:
+    get:
+      tags:
+        - Product Prices
+      summary: Get All Product Prices
+      description: Retrieve all prices for a specific product.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product whose prices to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of product prices.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProductPrice"
+        "404":
+          description: Product not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Product Prices
+      summary: Create a Product Price
+      description: Create a new price for a specific product.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product for which the price is being created.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+            $ref: "#/components/schemas/ProductPrice"
+      responses:
+        "201":
+          description: Product price created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductPrice"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Product not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/prices/{price_id}:
+    get:
+      tags:
+        - Product Prices
+      summary: Get a Specific Product Price
+      description: Retrieve details of a specific product price by its ID.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product whose price to retrieve.
+          schema:
+            type: string
+        - name: price_id
+          in: path
+          required: true
+          description: The ID of the product price to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified product price.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductPrice"
+        "404":
+          description: Product or product price not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Product Prices
+      summary: Delete a Specific Product Price (Not Supported)
+      description: |
+        Deleting a specific product price directly via the API is not supported. 
+        Please contact support if you need to delete a product price.
+      deprecated: true
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product whose price you wish to delete.
+          schema:
+            type: string
+        - name: price_id
+          in: path
+          required: true
+          description: The ID of the product price to delete.
+          schema:
+            type: string
+      responses:
+        "405":
+          description: Method Not Allowed. Contact support for deleting product prices.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/inventories:
+    get:
+      tags:
+        - Product Inventories
+      summary: Get All Product Inventories
+      description: Retrieve all inventories for a specific product.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product whose inventories to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of product inventories.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProductInventory"
+        "404":
+          description: Product not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Product Inventories
+      summary: Create a Product Inventory
+      description: Create a new inventory record for a specific product.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product for which the inventory is being created.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+            $ref: "/components/schemas/ProductInventory"
+      responses:
+        "201":
+          description: Product inventory created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductInventory"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Product not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/inventory/{inventory_id}:
+    get:
+      tags:
+        - Product Inventories
+      summary: Get a Specific Product Inventory
+      description: Retrieve details of a specific product inventory by its ID.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product whose inventory to retrieve.
+          schema:
+            type: string
+        - name: inventory_id
+          in: path
+          required: true
+          description: The ID of the product inventory to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified product inventory.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductInventory"
+        "404":
+          description: Product or product inventory not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Product Inventories
+      summary: Update a Specific Product Inventory
+      description: Update details of a specific product inventory by its ID.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product whose inventory is being updated.
+          schema:
+            type: string
+        - name: inventory_id
+          in: path
+          required: true
+          description: The ID of the product inventory to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductInventory"
+      responses:
+        "200":
+          description: Product inventory updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductInventory"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Product or product inventory not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Product Inventories
+      summary: Delete a Specific Product Inventory
+      description: Deletes a specific product inventory.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product whose inventory is to be deleted.
+          schema:
+            type: string
+        - name: inventory_id
+          in: path
+          required: true
+          description: The ID of the product inventory to delete.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Product inventory deleted successfully.
+        "404":
+          description: Product or inventory not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/attributes:
+    get:
+      tags:
+        - Product Attributes
+      summary: Get All Product Attributes
+      description: Retrieve all attributes for a specific product.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product whose attributes to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of product attributes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProductAttribute"
+        "404":
+          description: Product not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Product Attributes
+      summary: Create a Product Attribute
+      description: Creates a specific product attribute.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product for which the attribute is being created.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductAttribute"
+      responses:
+        "200":
+          description: Product attribute created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  products_attributes:
+                    type: object
+                    properties:
+                      attribute_id:
+                        type: integer
+                      name:
+                        type: string
+                      slug:
+                        type: string
+                      user_defined_key:
+                        type: string
+                      type:
+                        type: string
+                      values:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            version_id:
+                              type: integer
+                            value:
+                              type: string
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Product not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Product Attributes
+      summary: Update Many Product Attributes
+      description: Updates many attributes of a product.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product for which the attributes are being updated.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductAttribute"
+      responses:
+        "200":
+          description: Product attributes updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  products_attributes:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ProductAttributeDetail"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Product not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/attributes/{attribute_id}:
+    get:
+      tags:
+        - Product Attributes
+      summary: Get A Specific Product Attribute
+      description: Retrieves a specific product attribute.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product related to the specific attribute to retrieve.
+          schema:
+            type: string
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Details of the specified product attribute.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  products_attributes:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ProductAttributeDetail"
+        "404":
+          description: Product or attribute not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/attributes/{attribute_id}/values/{value_id}:
+    put:
+      tags:
+        - Product Attributes
+      summary: Update a Specific Product Attribute Value
+      description: Updates a specific product attribute value.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product.
+          schema:
+            type: string
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute.
+          schema:
+            type: string
+        - name: value_id
+          in: path
+          required: true
+          description: The ID of the attribute value to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductAttribute"
+      responses:
+        "200":
+          description: Product attribute value updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductAttribute"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Product, attribute, or attribute value not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /brands/{brand_id}/attributes/{attribute_id}/values/{value_id}:
+    delete:
+      tags:
+        - Brand Attributes
+      summary: Delete a Specific Brand Attribute Value
+      description: Deletes a specific brand attribute value.
+      parameters:
+        - name: brand_id
+          in: path
+          required: true
+          description: The ID of the brand.
+          schema:
+            type: string
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute.
+          schema:
+            type: string
+        - name: value_id
+          in: path
+          required: true
+          description: The ID of the attribute value to delete.
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Brand attribute value deleted successfully.
+        "404":
+          description: Brand, attribute, or attribute value not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
 
 # COMPONENTS
 components:
@@ -3643,3 +4542,245 @@ components:
         - id
         - name
         - sku
+    ProductAsset:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper Product asset ID.
+        product_id:
+          type: string
+          description: ID of the product to which the asset belongs.
+        uri:
+          type: string
+          description: URI of the asset.
+        sort_order:
+          type: integer
+          description: Sort order of the asset.
+        private:
+          type: boolean
+          description: Indicates if the asset is private.
+        alttext:
+          type: string
+          description: Image alternate text.
+        name:
+          type: string
+          description: Name of the image.
+        desc:
+          type: string
+          description: Description of the image.
+        type:
+          type: string
+          description: Type of the image.
+        thumbnail:
+          type: boolean
+          description: Indicates whether the asset is the thumbnail.
+      required:
+        - id
+        - product_id
+        - uri
+    ProductBarcode:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Product barcode ID.
+        product_id:
+          type: string
+          description: ID of the product to which the barcode belongs.
+        type:
+          type: string
+          description: The type of this barcode (EAN, UPC-A, GTIN-13, ITF-14, Custom).
+        barcode:
+          type: string
+          description: The barcode number.
+        created_at:
+          type: string
+          format: date-time
+          description: Datetime of the creation.
+        updated_at:
+          type: string
+          format: date-time
+          description: Datetime of the last update.
+      required:
+        - id
+        - product_id
+        - type
+        - barcode
+    ProductCategory:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper Product category ID.
+        parent_id:
+          type: string
+          description: Category parent ID.
+        name:
+          type: string
+          description: Category name.
+        desc:
+          type: string
+          description: Category description.
+        slug:
+          type: string
+          description: Category slug.
+        attribute_sets:
+          type: array
+          items:
+            type: string
+          description: Attribute set IDs for the category.
+        is_visible:
+          type: boolean
+          description: Whether to display the category.
+        seo_meta_desc:
+          type: string
+          description: Meta description for SEO.
+        seo_meta_keywords:
+          type: string
+          description: Meta keywords for SEO.
+        seo_meta_title:
+          type: string
+          description: Meta page title for SEO.
+        search_keywords:
+          type: string
+          description: Comma separated list of search keywords.
+        created_at:
+          type: string
+          format: date-time
+          description: Time the category was created (read only).
+        updated_at:
+          type: string
+          format: date-time
+          description: Time the category was updated (read only).
+      required:
+        - id
+        - name
+    ProductPrice:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper Product price ID.
+        product_id:
+          type: string
+          description: ID of the product to which the price belongs.
+        msrp:
+          type: number
+          format: float
+          description: Manufacturer's Suggested Retail Price.
+        map:
+          type: number
+          format: float
+          description: Minimum Advertised Price.
+        cost:
+          type: number
+          format: float
+          description: Cost Price.
+        sell_price:
+          type: number
+          format: float
+          description: Selling price.
+        from:
+          type: string
+          format: date-time
+          description: Price start date.
+        to:
+          type: string
+          format: date-time
+          description: Price end date.
+        currency_id:
+          type: string
+          description: Price currency ID.
+        tax_class_id:
+          type: string
+          description: Tax class ID.
+        author:
+          type: string
+          description: Price author.
+        booktype:
+          type: string
+          description: Pricebook Type.
+        batch_id:
+          type: string
+          description: Batch Import ID.
+        sell_price_reason:
+          type: string
+          description: Price over-ride reason.
+        base:
+          type: boolean
+          description: Price base (required).
+      required:
+        - id
+        - product_id
+        - sell_price
+        - base
+    ProductInventory:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper Product inventory ID.
+        product_id:
+          type: string
+          description: ID of the product to which the inventory belongs.
+        site:
+          type: string
+          description: Site of inventory.
+        bin:
+          type: string
+          description: Bin where the inventory is stored.
+        location:
+          type: string
+          description: Location of the inventory.
+        type:
+          type: string
+          description: Inventory type (e.g., physical, reserved).
+        count_on_hand:
+          type: integer
+          description: Count of inventory on hand.
+        count_on_hold:
+          type: integer
+          description: Count of inventory on hold.
+        source:
+          type: string
+          description: Source of the inventory.
+        batch_id:
+          type: string
+          description: Batch ID from inventory loading.
+      required:
+        - id
+        - product_id
+        - site
+        - bin
+        - location
+        - type
+        - count_on_hand
+    ProductAttribute:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper Attribute ID.
+        name:
+          type: string
+          description: Attribute name (must be unique).
+        slug:
+          type: string
+          description: Slugified Attribute name.
+        user_defined_key:
+          type: string
+          description: User Key for the attribute.
+        type:
+          type: string
+          description: Attribute type.
+          enum: [selectbox, date, datetime, textarea, multiselect, text]
+        values:
+          type: array
+          items:
+            type: string
+          description: The Attributes Value(s).
+      required:
+        - id
+        - name
+        - type
