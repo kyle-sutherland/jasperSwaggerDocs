@@ -3920,6 +3920,1118 @@ paths:
           description: Unauthorized. Invalid or missing authorization token.
       security:
         - bearerAuth: []
+    post:
+      tags:
+        - Brand Attributes
+      summary: Assign Attribute to Brand
+      description: Assigns a specific attribute to a brand.
+      parameters:
+        - name: brand_id
+          in: path
+          required: true
+          description: The ID of the brand to which the attribute will be assigned.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                attribute_id:
+                  type: integer
+                  description: The ID of the attribute to be assigned to the brand.
+      responses:
+        "200":
+          description: Attribute assigned to brand successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Attribute assigned to brand successfully."
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Brand or attribute not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/assigned-attribute-sets:
+    post:
+      tags:
+        - Product Attributes
+      summary: Assign Attribute Set to Product
+      description: Assigns a specific attribute set to a product.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product to which the attribute set will be assigned.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                attribute_set_id:
+                  type: integer
+                  description: The ID of the attribute set to be assigned to the product.
+      responses:
+        "200":
+          description: Attribute set assigned to product successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Attribute set assigned to product successfully."
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Product or attribute set not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/channel/{channel_id}:
+    post:
+      tags:
+        - Product Channels
+      summary: Update or Create Web ID
+      description: Updates or creates a web ID in product_channels for a specific product and channel.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product.
+          schema:
+            type: string
+        - name: channel_id
+          in: path
+          required: true
+          description: The ID of the channel.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                web_id:
+                  type: integer
+                  description: The web ID to be updated or created in product_channels.
+      responses:
+        "200":
+          description: Web ID updated or created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Web ID updated or created successfully."
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Product or channel not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /product-relation-types:
+    get:
+      tags:
+        - Product Relations
+      summary: Get All Product Relation Types
+      description: Retrieves all product relation types.
+      responses:
+        "200":
+          description: A list of all product relation types.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_relation_types:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ProductRelationType"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Product Relations
+      summary: Create a Product Relation Type
+      description: Creates a new product relation type.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductRelationType"
+      responses:
+        "200":
+          description: Product relation type created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductRelationType"
+      "400":
+        description: Bad request. Invalid input parameters.
+      "401":
+        description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /product-relation-types/{relation_type_id}:
+    get:
+      tags:
+        - Product Relations
+      summary: Get a Specific Product Relation Type
+      description: Retrieves a specific product relation type by its ID.
+      parameters:
+        - name: relation_type_id
+          in: path
+          required: true
+          description: The ID of the product relation type to retrieve.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Details of the specified product relation type.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_relation_type:
+                    $ref: "#/components/schemas/ProductRelationType"
+        "404":
+          description: Product relation type not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Product Relations
+      summary: Update a Specific Product Relation Type
+      description: Updates a specific product relation type by its ID.
+      parameters:
+        - name: relation_type_id
+          in: path
+          required: true
+          description: The ID of the product relation type to update.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductRelationType"
+      responses:
+        "200":
+          description: Product relation type updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_relation_type:
+                    $ref: "#/components/schemas/ProductRelationType"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Product relation type not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Product Relations
+      summary: Delete a Specific Product Relation Type
+      description: Deletes a specific product relation type by its ID.
+      parameters:
+        - name: relation_type_id
+          in: path
+          required: true
+          description: The ID of the product relation type to delete.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Product relation type deleted successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Deleted."
+        "404":
+          description: Product relation type not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/relations:
+    get:
+      tags:
+        - Product Relations
+      summary: Get All Product Relations From a Single Product
+      description: Retrieves all relations to a single product.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product from which you are retrieving relations.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A list of all product relations.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_relations:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/ProductRelation"
+        "404":
+          description: Product not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/relations/type/{relation_type_id}:
+    get:
+      tags:
+        - Product Relations
+      summary: Get Product Relations From a Product by Relation Type
+      description: Retrieves relations to a product for a single relation type.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product from which you are retrieving relations.
+          schema:
+            type: integer
+        - name: relation_type_id
+          in: path
+          required: true
+          description: The ID of the relation type from which you are retrieving relations.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A list of product relations for the specified relation type.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_relations:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/ProductRelation"
+        "404":
+          description: Product or relation type not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/relations/{related_product_id}/type/{relation_type_id}:
+    post:
+      tags:
+        - Product Relations
+      summary: Create Product Relation
+      description: Creates a product relation between two products on a single relation type.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product on which the relation is based.
+          schema:
+            type: integer
+        - name: related_product_id
+          in: path
+          required: true
+          description: The ID of the product to which the base product is being attached.
+          schema:
+            type: integer
+        - name: relation_type_id
+          in: path
+          required: true
+          description: The ID of the relation type to which the relation should belong.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: An empty object as the body is not used for this request.
+      responses:
+        "200":
+          description: Product relation created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_relations:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/ProductRelation"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Product, related product, or relation type not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Product Relations
+      summary: Delete a Product Relation
+      description: Deletes a specific product relation between two products under a specified relation type.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product on which the relation is based.
+          schema:
+            type: integer
+        - name: related_product_id
+          in: path
+          required: true
+          description: The ID of the product to which the base product is attached.
+          schema:
+            type: integer
+        - name: relation_type_id
+          in: path
+          required: true
+          description: The ID of the relation type to which the relation belongs.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Product relation deleted successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Product relation deleted successfully."
+        "404":
+          description: Product, related product, or relation type not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/relations/{related_product_id}/type/{relation_type_id}/attributes:
+    get:
+      tags:
+        - Product Relations
+      summary: Get Product Relation Attributes From a Product by Relation and Relation Type
+      description: Retrieves product relation attributes for a specific relation between two products under a specified relation type.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product from which you are retrieving relations.
+          schema:
+            type: integer
+        - name: related_product_id
+          in: path
+          required: true
+          description: The ID of the product to which the base product is being attached.
+          schema:
+            type: integer
+        - name: relation_type_id
+          in: path
+          required: true
+          description: The ID of the relation type to which the relation belongs.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A list of product relation attribute values.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_relation_attribute_values:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ProductRelationAttributeValue"
+        "404":
+          description: Product, related product, or relation type not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Product Relations
+      summary: Create or Update Product Relation Attributes
+      description: Creates or updates product relation attributes between two products on a single relation type.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product on which the relation is based.
+          schema:
+            type: integer
+        - name: related_product_id
+          in: path
+          required: true
+          description: The ID of the product to which the base product is being attached.
+          schema:
+            type: integer
+        - name: relation_type_id
+          in: path
+          required: true
+          description: The ID of the relation type to which the relation belongs.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                # Specify the properties of the product relation attributes here
+                # Example:
+                attribute_id:
+                  type: integer
+                  description: The ID of the attribute.
+                value:
+                  type: string
+                  description: The value of the attribute.
+      responses:
+        "200":
+          description: Product relation attributes created or updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_relation_attribute_values:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ProductRelationAttributeValue"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Product, related product, or relation type not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/relations/{related_product_id}/type/{relation_type_id}/attribute/{attribute_id}:
+    post:
+      tags:
+        - Product Relations
+      summary: Create or Update a Single Attribute of a Product Relation
+      description: Creates or updates a single attribute of a product relation between two products on a single relation type.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product on which the relation is based.
+          schema:
+            type: integer
+        - name: related_product_id
+          in: path
+          required: true
+          description: The ID of the product to which the base product is being attached.
+          schema:
+            type: integer
+        - name: relation_type_id
+          in: path
+          required: true
+          description: The ID of the relation type to which the relation belongs.
+          schema:
+            type: integer
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute to create or update.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                value:
+                  type: string
+                  description: The value of the attribute to be created or updated.
+      responses:
+        "200":
+          description: Product relation attribute created or updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_relation_attribute_values:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ProductRelationAttributeValue"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Product, related product, relation type, or attribute not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Product Relations
+      summary: Delete a Product Relation Attribute
+      description: Deletes a specific attribute of a product relation between two products on a single relation type.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product on which the relation is based.
+          schema:
+            type: integer
+        - name: related_product_id
+          in: path
+          required: true
+          description: The ID of the product to which the base product is attached.
+          schema:
+            type: integer
+        - name: relation_type_id
+          in: path
+          required: true
+          description: The ID of the relation type to which the relation belongs.
+          schema:
+            type: integer
+        - name: attribute_id
+          in: path
+          required: true
+          description: The ID of the attribute to delete.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Product relation attribute deleted successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Product relation attribute deleted successfully."
+        "404":
+          description: Product, related product, relation type, or attribute not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/tags:
+    get:
+      tags:
+        - Product Tags
+      summary: Get All Product Tags From a Single Product
+      description: Retrieves all tags from all versions of a single product.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product from which you are retrieving tags.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A list of all product tags from all versions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_id:
+                    type: integer
+                    description: The ID of the product.
+                  tags:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        type: string
+        "404":
+          description: Product not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Product Tags
+      summary: Update Product Tags Across Multiple Versions
+      description: Updates tags across multiple versions of a product.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product for which tags are being updated.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tags:
+                  type: object
+                  additionalProperties:
+                    type: array
+                    items:
+                      type: string
+                  description: An object mapping version IDs to arrays of tag strings.
+      responses:
+        "200":
+          description: Product tags updated successfully across multiple versions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_id:
+                    type: integer
+                  tags:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        type: string
+        "404":
+          description: Product not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /products/{product_id}/tags/{version_id}:
+    get:
+      tags:
+        - Product Tags
+      summary: Get All Product Tags From a Single Product by Version
+      description: Retrieves all tags from a specific version of a single product.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product from which you are retrieving tags.
+          schema:
+            type: integer
+        - name: version_id
+          in: path
+          required: false
+          description: The ID of the version from which you are retrieving tags. Omitting this retrieves tags from all versions.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A list of all product tags from the specified version.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_id:
+                    type: integer
+                    description: The ID of the product.
+                  tags:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        type: string
+        "404":
+          description: Product or version not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Product Tags
+      summary: Update Product Tags for a Specific Version
+      description: Updates tags for a specific version of a product.
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product to update.
+          schema:
+            type: integer
+        - name: version_id
+          in: path
+          required: true
+          description: The version ID for which tags are being updated.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  description: The list of tags to update for the specified version.
+      responses:
+        "200":
+          description: Product tags updated successfully for the specified version.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_id:
+                    type: integer
+                  tags:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        type: string
+        "404":
+          description: Product or version not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /templates:
+    get:
+      tags:
+        - Templates
+      summary: Get All Templates
+      description: Retrieves all templates.
+      responses:
+        "200":
+          description: A list of all templates.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  templates:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Template"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Templates
+      summary: Create a Template
+      description: Creates a new template.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the Template.
+                slug:
+                  type: string
+                  description: Slug for the Template.
+              required:
+                - name
+                - slug
+      responses:
+        "201":
+          description: Template created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Template"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /templates/{template_id}:
+    get:
+      tags:
+        - Templates
+      summary: Get a Specific Template
+      description: Retrieves a specific template by its ID.
+      parameters:
+        - name: template_id
+          in: path
+          required: true
+          description: The ID of the template to retrieve.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Details of the specified template.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Template"
+        "404":
+          description: Template not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Templates
+      summary: Update a Specific Template
+      description: Updates a specific template by its ID.
+      parameters:
+        - name: template_id
+          in: path
+          required: true
+          description: The ID of the template to update.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: New name of the Template.
+                slug:
+                  type: string
+                  description: New slug for the Template. (Optional)
+                content:
+                  type: string
+                  description: New HTML or other content of the Template. (Optional)
+      responses:
+        "200":
+          description: Template updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Template"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Template not found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /webhooks:
+    get:
+      tags:
+        - Webhooks
+      summary: Get All Webhooks
+      description: Retrieves a list of all configured webhooks.
+      responses:
+        "200":
+          description: A list of all webhooks.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  webhooks:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Webhook"
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - Webhooks
+      summary: Create a Webhook
+      description: Creates a new webhook with the specified properties.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Webhook"
+      responses:
+        "201":
+          description: Webhook created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Webhook"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /webhooks/{webhook_id}:
+    get:
+      tags:
+        - Webhooks
+      summary: Get a Specific Webhook
+      description: Retrieves detailed information about a specific webhook.
+      parameters:
+        - in: path
+          name: webhook_id
+          required: true
+          schema:
+            type: integer
+          description: The unique identifier of the webhook to retrieve.
+      responses:
+        "200":
+          description: Successfully retrieved the webhook details.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookDetails"
+        "404":
+          description: Not found. The specified webhook could not be found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - Webhooks
+      summary: Update a Webhook
+      description: Updates an existing webhook with the specified properties.
+      parameters:
+        - in: path
+          name: webhook_id
+          required: true
+          schema:
+            type: integer
+          description: The unique identifier of the webhook to be updated.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Webhook"
+      responses:
+        "200":
+          description: Webhook updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Webhook"
+        "400":
+          description: Bad request. Invalid input parameters.
+        "404":
+          description: Not found. The webhook to update could not be found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /webhooks/{webhook_id}/disable:
+    post:
+      tags:
+        - Webhooks
+      summary: Disable a Webhook
+      description: Disables an existing webhook, preventing it from receiving any further events.
+      parameters:
+        - in: path
+          name: webhook_id
+          required: true
+          schema:
+            type: integer
+          description: The unique identifier of the webhook to be disabled.
+      responses:
+        "200":
+          description: Webhook disabled successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Webhook disabled successfully."
+        "404":
+          description: Not found. The webhook to disable could not be found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
+  /webhooks/{webhook_id}/enable:
+    put:
+      tags:
+        - Webhooks
+      summary: Enable a Webhook
+      description: Enables a previously disabled webhook, allowing it to start receiving events again.
+      parameters:
+        - in: path
+          name: webhook_id
+          required: true
+          schema:
+            type: integer
+          description: The unique identifier of the webhook to be enabled.
+      responses:
+        "200":
+          description: Webhook enabled successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Webhook"
+        "404":
+          description: Not found. The webhook to enable could not be found.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+      security:
+        - bearerAuth: []
 
 # COMPONENTS
 components:
@@ -4784,3 +5896,125 @@ components:
         - id
         - name
         - type
+    ProductRelationType:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Jasper Product Relation Type ID.
+        name:
+          type: string
+          description: Product Relation Type name.
+        description:
+          type: string
+          description: Product Relation Type description.
+        child_label:
+          type: string
+          description: How the relation is labeled when seen from the products assigned in the relation.
+        parent_label:
+          type: string
+          description: How the relation is labeled when seen from the product where the related are being assigned.
+        label:
+          type: string
+          description: Grouping label for product relation type.
+      required:
+        - id
+        - name
+        - child_label
+        - parent_label
+        - relationship_cardinality
+        - label
+    ProductRelation:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the related product.
+        name:
+          type: string
+          description: Name of the related product.
+        sku:
+          type: string
+          description: SKU of the related product.
+      required:
+        - id
+        - name
+        - sku
+    ProductRelationAttributeValue:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the product relation attribute value.
+        entity_id:
+          type: integer
+          description: The ID of the entity (product) to which the attribute value is attached.
+        attribute_id:
+          type: integer
+          description: The ID of the attribute.
+        value:
+          type: string
+          description: The value of the attribute.
+      required:
+        - id
+        - entity_id
+        - attribute_id
+        - value
+    Template:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Jasper Template ID.
+        name:
+          type: string
+          description: Name of the Template.
+        slug:
+          type: string
+          description: Slug for the Template.
+        content:
+          type: string
+          description: HTML or other content of the Template.
+      required:
+        - id
+        - name
+        - slug
+        - content
+    Webhook:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Webhook name.
+        callback_url:
+          type: string
+          description: Webhook callback URL.
+        entity_type:
+          type: string
+          description: Webhook entity type (valid values; product, category, brand, product_asset, concrete_entity).
+        include_entity_data:
+          type: integer
+          description: Include data with the payload (valid values; 0 or 1).
+        headers:
+          type: object
+          additionalProperties: true
+          description: Custom headers to include with the payload.
+        retry_policy:
+          type: string
+          description: Retry policy in case of failure (valid values; linear, exponential, no_retry).
+        minimum_retry_interval:
+          type: integer
+          description: Interval time before retry (between 60 and 86400 seconds).
+        retry_limit:
+          type: integer
+          description: Retry limit (between 0 and 10).
+        channel_id:
+          type: integer
+          description: PIM channel ID (channel specific webhook).
+        event_type:
+          type: string
+          description: Sync channel type (channel specific webhook).
+      required:
+        - name
+        - callback_url
+        - entity_type
