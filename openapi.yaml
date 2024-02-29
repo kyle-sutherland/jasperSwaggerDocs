@@ -3745,7 +3745,7 @@ paths:
         content:
           application/json:
             schema:
-            $ref: "#/components/schemas/ProductAsset"
+              $ref: "#/components/schemas/ProductAsset"
       responses:
         "201":
           description: Product asset created successfully.
@@ -3814,7 +3814,7 @@ paths:
         content:
           application/json:
             schema:
-            $ref: "#/components/schemas/ProductAsset"
+              $ref: "#/components/schemas/ProductAsset"
       responses:
         "200":
           description: Product asset updated successfully.
@@ -3917,7 +3917,7 @@ paths:
         content:
           application/json:
             schema:
-            $ref: "#/components/schemas/ProductBarcode"
+              $ref: "#/components/schemas/ProductBarcode"
       responses:
         "201":
           description: Product barcode created successfully.
@@ -4092,6 +4092,7 @@ paths:
         content:
           application/json:
             schema:
+              $ref: "#/components/schemas/ProductBarcode"
       responses:
         "200":
           description: Product barcodes upserted successfully. No barcodes have been deleted.
@@ -4213,7 +4214,7 @@ paths:
         content:
           application/json:
             schema:
-            $ref: "#/components/schemas/ProductPrice"
+              $ref: "#/components/schemas/ProductPrice"
       responses:
         "201":
           description: Product price created successfully.
@@ -4354,7 +4355,7 @@ paths:
         content:
           application/json:
             schema:
-            $ref: "#/components/schemas/ProductInventory"
+              $ref: "#/components/schemas/ProductInventory"
       responses:
         "201":
           description: Product inventory created successfully.
@@ -4550,7 +4551,7 @@ paths:
           content:
             application/json:
               schema:
-              $ref: "#/components/schemas/ProductAttribute"
+                $ref: "#/components/schemas/ProductAttribute"
         "202":
           description: Request has been accepted, but not yet processed.
         "400":
@@ -5497,7 +5498,7 @@ paths:
             type: integer
         - name: version_id
           in: path
-          required: false
+          required: true
           description: The ID of the version from which you are retrieving tags. Omitting this retrieves tags from all versions.
           schema:
             type: integer
@@ -5813,7 +5814,6 @@ paths:
           description: Successfully retrieved the webhook details.
           content:
             application/json:
-              type: object
               schema:
                 $ref: "#/components/schemas/Webhook"
         "202":
@@ -6920,3 +6920,39 @@ components:
         - name
         - callback_url
         - entity_type
+    ProductAttributeDetail:
+      type: object
+      properties:
+        attribute_id:
+          type: integer
+          description: The ID of the attribute.
+        name:
+          type: string
+          description: Name of the attribute.
+        slug:
+          type: string
+          description: Slugified name of the attribute.
+        user_defined_key:
+          type: string
+          description: User-defined key for the attribute.
+        type:
+          type: string
+          description: Type of the attribute.
+        values:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: ID of the attribute value.
+              version_id:
+                type: integer
+                description: Version ID of the attribute value.
+              value:
+                type: string
+                description: Text value of the attribute.
+      required:
+        - attribute_id
+        - name
+        - type
