@@ -1482,6 +1482,13 @@ paths:
         - Brand Attributes
       summary: Create a Brand Attribute
       description: Create a new brand attribute in the system.
+      parameters:
+        - name: brand_id
+          in: path
+          required: true
+          description: The ID of the brand from which to retrieve attributes.
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -3910,7 +3917,7 @@ paths:
         content:
           application/json:
             schema:
-            $ref: "/components/schemas/ProductBarcodes"
+            $ref: "#/components/schemas/ProductBarcode"
       responses:
         "201":
           description: Product barcode created successfully.
@@ -4347,7 +4354,7 @@ paths:
         content:
           application/json:
             schema:
-            $ref: "/components/schemas/ProductInventory"
+            $ref: "#/components/schemas/ProductInventory"
       responses:
         "201":
           description: Product inventory created successfully.
@@ -5806,8 +5813,9 @@ paths:
           description: Successfully retrieved the webhook details.
           content:
             application/json:
+              type: object
               schema:
-                $ref: "#/components/schemas/WebhookDetails"
+                $ref: "#/components/schemas/Webhook"
         "202":
           description: Request has been accepted, but not yet processed.
         "404":
@@ -5928,7 +5936,6 @@ paths:
       security:
         - bearerAuth: []
 
-# COMPONENTS
 components:
   securitySchemes:
     bearerAuth:
