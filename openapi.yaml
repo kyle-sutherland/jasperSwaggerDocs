@@ -61,11 +61,13 @@ tags:
   - name: Product Tags
   - name: Template
   - name: Webhooks
-  - name: Errors
 
 paths:
   /ping:
     get:
+      tags:
+        - Admin
+        - Authentication
       responses:
         "200":
           description: Successful request returns current PIM server time.
@@ -75,21 +77,31 @@ paths:
                 $ref: "#/components/schemas/Ping"
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /attributes:
     get:
       tags:
         - Attributes
+      summary: Retrieve all attributes.
+      description: This endpoint retrieves all attributes.
       responses:
         "200":
-          description: This endpoint retrieves all attributes.
+          description: Attributes retrieved.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Attribute"
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -114,6 +126,10 @@ paths:
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
 
@@ -164,6 +180,10 @@ paths:
                 $ref: "#/components/schemas/Attribute"
         "404":
           description: Attribute not found.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -197,6 +217,10 @@ paths:
           description: Attribute not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -218,6 +242,10 @@ paths:
           description: Attribute not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
 
@@ -249,6 +277,10 @@ paths:
                 $ref: "#/components/schemas/Attribute"
         "404":
           description: Attribute or version not found.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -276,6 +308,10 @@ paths:
           description: Attribute or attribute version not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
 
@@ -316,6 +352,10 @@ paths:
           description: Attribute or version not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
 
@@ -376,6 +416,10 @@ paths:
           description: Version not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
 
@@ -415,6 +459,10 @@ paths:
           description: Attribute type value or version not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /attributes/{attribute_id}/attributes/{type_value_id}:
@@ -447,6 +495,10 @@ paths:
           description: Attribute type value not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
 
@@ -476,10 +528,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AttributeTypeValue"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
 
@@ -521,12 +579,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AttributeTypeValue"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Attribute type value or version not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
 
@@ -562,12 +626,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AttributeTypeValue"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Attribute type value not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -595,6 +665,10 @@ paths:
           description: Attribute type value not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
 
@@ -626,10 +700,16 @@ paths:
       responses:
         "204":
           description: The version of the attribute type value deleted successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Attribute type value or version not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
 
@@ -648,8 +728,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/AttributeSet"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -674,6 +760,10 @@ paths:
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /attribute_sets/{attribute_set_id}:
@@ -700,6 +790,10 @@ paths:
           description: Attribute set not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -727,12 +821,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AttributeSet"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Attribute set not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -754,6 +854,10 @@ paths:
           description: Attribute set not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
 
@@ -772,8 +876,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/AttributeSetAttribute"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /attribute_sets/{attribute_set_id}/attributes:
@@ -802,12 +912,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AttributeSetAttribute"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Attribute set not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /attribute_sets/{attribute_set_id}/attributes/{attribute_id}:
@@ -830,12 +946,18 @@ paths:
           schema:
             type: string
       responses:
-        "204":
+        "200":
           description: Attribute set attribute deleted successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Attribute set or attribute not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /blocks:
@@ -855,6 +977,10 @@ paths:
                   $ref: "#/components/schemas/Block"
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -875,10 +1001,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Block"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /blocks/{block_id}:
@@ -901,10 +1033,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Block"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Block not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -932,12 +1070,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Block"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Block not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /block_assets:
@@ -955,8 +1099,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/BlockAsset"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /block_assets/{block_asset_id}:
@@ -979,10 +1129,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BlockAsset"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Block asset not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /brands:
@@ -1000,8 +1156,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Brand"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -1022,10 +1184,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Brand"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /brands/{brand_id}:
@@ -1048,10 +1216,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Brand"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Brand not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -1079,12 +1253,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Brand"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Brand not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -1102,10 +1282,16 @@ paths:
       responses:
         "204":
           description: Brand deleted successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Brand not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /brand_assets:
@@ -1125,6 +1311,10 @@ paths:
                   $ref: "#/components/schemas/BrandAsset"
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -1145,10 +1335,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BrandAsset"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /brand_assets/{brand_asset_id}:
@@ -1171,10 +1367,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BrandAsset"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Brand asset not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -1202,12 +1404,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BrandAsset"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Brand asset not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -1225,18 +1433,31 @@ paths:
       responses:
         "204":
           description: Brand asset deleted successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Brand asset not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
-  /brand-attributes:
+  /brands/{brand_id}/attributes:
     get:
       tags:
         - Brand Attributes
       summary: Get All Brand Attributes
       description: Retrieve a list of all brand attributes defined in the PIM.
+      parameters:
+        - name: brand_id
+          in: path
+          required: true
+          description: The ID of the brand from which to retrieve attributes.
+          schema:
+            type: string
       responses:
         "200":
           description: A list of brand attributes.
@@ -1246,8 +1467,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/BrandAttribute"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -1268,14 +1495,19 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BrandAttribute"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
-
-  /brand-attributes/{brand_attribute_id}:
+  /brands/{brand_id}/attributes/{brand_attribute_id}:
     get:
       tags:
         - Brand Attributes
@@ -1288,6 +1520,12 @@ paths:
           description: The ID of the brand attribute to retrieve.
           schema:
             type: string
+        - name: brand_id
+          in: path
+          required: true
+          description: The ID of the brand from which to retrieve attributes.
+          schema:
+            type: string
       responses:
         "200":
           description: Details of the specified brand attribute.
@@ -1295,10 +1533,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BrandAttribute"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Brand attribute not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -1311,6 +1555,12 @@ paths:
           in: path
           required: true
           description: The ID of the brand attribute to update.
+          schema:
+            type: string
+        - name: brand_id
+          in: path
+          required: true
+          description: The ID of the brand from which to retrieve attributes.
           schema:
             type: string
       requestBody:
@@ -1326,15 +1576,21 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BrandAttribute"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Brand asset not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
-  /attribute-values/{attribute_value_id}:
+  /brands/{brand_id}/attributes/{brand_attribute_id}/values/{attribute_value_id}:
     delete:
       tags:
         - Brand Attributes
@@ -1347,13 +1603,31 @@ paths:
           description: The ID of the attribute value to delete.
           schema:
             type: string
+        - name: brand_attribute_id
+          in: path
+          required: true
+          description: The ID of the brand attribute to update.
+          schema:
+            type: string
+        - name: brand_id
+          in: path
+          required: true
+          description: The ID of the brand from which to retrieve attributes.
+          schema:
+            type: string
       responses:
         "204":
           description: Attribute value deleted successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Attribute value not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /brands/{brand_id}/assigned_attributes:
@@ -1378,12 +1652,18 @@ paths:
       responses:
         "201":
           description: Attribute assigned to brand successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Brand or attribute not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /brands/{brand_id}/assigned_attribute_sets:
@@ -1408,12 +1688,18 @@ paths:
       responses:
         "201":
           description: Attribute set assigned to brand successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Brand or attribute set not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /categories:
@@ -1431,8 +1717,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Category"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -1453,10 +1745,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Category"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /categories/{category_id}:
@@ -1479,10 +1777,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Category"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Category not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -1510,12 +1814,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Category"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Category not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -1533,18 +1843,31 @@ paths:
       responses:
         "204":
           description: Category deleted successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Category not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
-  /category_assets:
+  /categories/{category_id}/assets:
     get:
       tags:
         - Category Assets
       summary: Get All Category Assets
       description: Retrieve a list of all category assets defined in the PIM.
+      parameters:
+        - name: category_id
+          in: path
+          required: true
+          description: The ID of the category to delete.
+          schema:
+            type: string
       responses:
         "200":
           description: A list of category assets.
@@ -1554,15 +1877,28 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/CategoryAsset"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
       tags:
         - Category Assets
       summary: Create a Category Asset
-      description: Create a new category asset in the system.
+      description: Create a new category asset.
+      parameters:
+        - name: category_id
+          in: path
+          required: true
+          description: The ID of the category to delete.
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -1576,23 +1912,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CategoryAsset"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
-  /category_assets/{category_asset_id}:
+  /categories/{category_id}/assets/{category_asset_id}:
     get:
       tags:
         - Category Assets
-      summary: Get a Specific Category Asset
+      summary: Get a Specific Category Asset.
       description: Retrieve details of a specific category asset by its ID.
       parameters:
         - name: category_asset_id
           in: path
           required: true
           description: The ID of the category asset to retrieve.
+          schema:
+            type: string
+        - name: category_id
+          in: path
+          required: true
+          description: The ID of the category to delete.
           schema:
             type: string
       responses:
@@ -1602,22 +1950,34 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CategoryAsset"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Category asset not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
       tags:
         - Category Assets
-      summary: Update a Specific Category Asset
+      summary: Update a Specific Category Asset.
       description: Update an existing category asset by its ID.
       parameters:
         - name: category_asset_id
           in: path
           required: true
           description: The ID of the category asset to update.
+          schema:
+            type: string
+        - name: category_id
+          in: path
+          required: true
+          description: The ID of the category to delete.
           schema:
             type: string
       requestBody:
@@ -1633,18 +1993,24 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CategoryAsset"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Category asset not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
       tags:
         - Category Assets
-      summary: Delete a Specific Category Asset
+      summary: Delete a Specific Category Asset.
       description: This endpoint allows for the deletion of a specific category asset by its ID.
       parameters:
         - name: category_asset_id
@@ -1653,16 +2019,27 @@ paths:
           description: The ID of the category asset to delete.
           schema:
             type: string
+        - name: category_id
+          in: path
+          required: true
+          description: The ID of the category to delete.
+          schema:
+            type: string
       responses:
         "204":
           description: Category asset deleted successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Category asset not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
-
   /categories/{category_id}/channel/{channel_id}:
     post:
       tags:
@@ -1695,10 +2072,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WebId"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /channels:
@@ -1716,8 +2099,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Channel"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /channels/{channel_id}:
@@ -1740,10 +2129,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Channel"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Channel not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /display_groups:
@@ -1761,8 +2156,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/DisplayGroup"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -1783,10 +2184,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DisplayGroup"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /display_groups/{display_group_id}:
@@ -1809,10 +2216,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DisplayGroup"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Display group not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -1840,12 +2253,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DisplayGroup"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Display group not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /exports/{export_id}:
@@ -1868,10 +2287,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExportDetails"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Export not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /generic_entities:
@@ -1889,8 +2314,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/GenericEntity"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -1911,10 +2342,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GenericEntity"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /generic_entities/{generic_entity_id}:
@@ -1937,10 +2374,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GenericEntity"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Generic entity not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -1968,12 +2411,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GenericEntity"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Generic entity not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -1991,10 +2440,16 @@ paths:
       responses:
         "204":
           description: Generic entity deleted successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Generic entity not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /generic_entities/{generic_entity_id}/concrete_entities:
@@ -2020,10 +2475,16 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/ConcreteEntity"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Generic entity not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /generic_entities/{ID}/concrete_entities:
@@ -2057,10 +2518,16 @@ paths:
                 properties:
                   concrete_entity:
                     $ref: "#/components/schemas/ConcreteEntity"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /generic_entities/{generic_entity_id}/concrete_entities/{concrete_entity_id}:
@@ -2089,10 +2556,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ConcreteEntity"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Concrete entity not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -2117,10 +2590,16 @@ paths:
       responses:
         "204":
           description: Concrete entity deleted successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Concrete entity or generic entity not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -2155,12 +2634,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ConcreteEntity"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Concrete entity or generic entity not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /options:
@@ -2176,8 +2661,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Option"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -2198,10 +2689,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Option"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /options/{option_id}:
@@ -2224,10 +2721,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Option"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Option not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -2256,12 +2759,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Option"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Option not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -2279,10 +2788,16 @@ paths:
       responses:
         "204":
           description: Option deleted successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Option not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /option_values/{option_value_id}:
@@ -2305,10 +2820,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/OptionValue"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Option value not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -2337,12 +2858,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/OptionValue"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Option value not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -2360,10 +2887,16 @@ paths:
       responses:
         "204":
           description: Option value deleted successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Option value not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /option_values:
@@ -2385,10 +2918,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/OptionValue"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /option_sets:
@@ -2406,8 +2945,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/OptionSet"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -2429,10 +2974,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/OptionSet"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /option_sets/{option_set_id}:
@@ -2455,10 +3006,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/OptionSet"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Option set not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -2487,12 +3044,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/OptionSet"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Option set not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /option_set_options:
@@ -2510,8 +3073,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/OptionSetOption"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /option_set_options/{option_set_option_id}:
@@ -2539,12 +3108,18 @@ paths:
           description: Option set option updated successfully.
         "201":
           description: Option set option created successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Option set option not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -2562,10 +3137,16 @@ paths:
       responses:
         "204":
           description: Option set option deleted successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Option set option not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /pages:
@@ -2583,8 +3164,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Page"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -2607,10 +3194,16 @@ paths:
               schema:
                 type: object
                 $ref: "#/components/schemas/Page"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /pages/{page_id}:
@@ -2633,10 +3226,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Page"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Page not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -2665,12 +3264,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Page"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Page not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /page_assets:
@@ -2688,8 +3293,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/PageAsset"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /page_assets/{page_asset_id}:
@@ -2712,10 +3323,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PageAsset"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Page asset not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products:
@@ -2732,8 +3349,14 @@ paths:
               schema:
                 type: object
                 $ref: "#/components/schemas/Product"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -2759,11 +3382,16 @@ paths:
                   product:
                     type: object
                     $ref: "#/components/schemas/Product"
-
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/version/{version_id}:
@@ -2788,8 +3416,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Product"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}:
@@ -2812,10 +3446,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Product"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -2847,12 +3487,18 @@ paths:
                 properties:
                   product:
                     $ref: "#/components/schemas/Product"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Product not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -2870,10 +3516,16 @@ paths:
       responses:
         "204":
           description: Product deleted successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/version/{version_id}:
@@ -2902,10 +3554,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Product"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product or product version not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -2938,12 +3596,18 @@ paths:
           description: Product version updated successfully.
         "201":
           description: New product version created successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Product or product version not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -2967,10 +3631,16 @@ paths:
       responses:
         "204":
           description: Product version deleted successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product or product version not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/sku/{sku}:
@@ -2993,10 +3663,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Product"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{child_product_id}/remove_from_parent:
@@ -3015,10 +3691,16 @@ paths:
       responses:
         "204":
           description: Child product removed from parent successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Child product or parent product not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /product-assets:
@@ -3036,8 +3718,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/ProductAsset"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -3058,10 +3746,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProductAsset"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /product-assets/{product_asset_id}:
@@ -3084,10 +3778,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProductAsset"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product asset not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -3115,12 +3815,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProductAsset"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Product asset not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -3138,10 +3844,16 @@ paths:
       responses:
         "204":
           description: Product asset deleted successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product asset not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/barcodes:
@@ -3169,10 +3881,16 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/ProductBarcode"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -3200,10 +3918,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProductBarcode"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/barcodes/{barcode_id}:
@@ -3248,12 +3972,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProductBarcode"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Product or barcode not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -3277,10 +4007,16 @@ paths:
       responses:
         "204":
           description: Product barcode deleted successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product or barcode not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/barcodes/upsert:
@@ -3314,12 +4050,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProductBarcode"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Product not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -3350,12 +4092,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProductBarcode"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Product not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/categories:
@@ -3393,12 +4141,18 @@ paths:
                 properties:
                   product_categories:
                     $ref: "#/components/schemas/ProductCategory"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Product or category not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/prices:
@@ -3423,10 +4177,16 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/ProductPrice"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -3454,12 +4214,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProductPrice"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Product not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/prices/{price_id}:
@@ -3488,10 +4254,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProductPrice"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product or product price not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -3518,6 +4290,10 @@ paths:
       responses:
         "405":
           description: Method Not Allowed. Contact support for deleting product prices.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/inventories:
@@ -3542,10 +4318,16 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/ProductInventory"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -3573,12 +4355,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProductInventory"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Product not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/inventory/{inventory_id}:
@@ -3607,10 +4395,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProductInventory"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product or product inventory not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -3644,12 +4438,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProductInventory"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Product or product inventory not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -3673,10 +4473,16 @@ paths:
       responses:
         "204":
           description: Product inventory deleted successfully.
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product or inventory not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/attributes:
@@ -3701,10 +4507,16 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/ProductAttribute"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -3731,38 +4543,19 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  products_attributes:
-                    type: object
-                    properties:
-                      attribute_id:
-                        type: integer
-                      name:
-                        type: string
-                      slug:
-                        type: string
-                      user_defined_key:
-                        type: string
-                      type:
-                        type: string
-                      values:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            id:
-                              type: integer
-                            version_id:
-                              type: integer
-                            value:
-                              type: string
+              $ref: "#/components/schemas/ProductAttribute"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Product not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -3789,18 +4582,19 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  products_attributes:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/ProductAttributeDetail"
+                $ref: "#/components/schemas/ProductAttributeDetail"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Product not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/attributes/{attribute_id}:
@@ -3828,16 +4622,17 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  products_attributes:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/ProductAttributeDetail"
+                $ref: "#/components/schemas/ProductAttributeDetail"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product or attribute not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/attributes/{attribute_id}/values/{value_id}:
@@ -3878,87 +4673,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProductAttribute"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Product, attribute, or attribute value not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
-      security:
-        - bearerAuth: []
-  /brands/{brand_id}/attributes/{attribute_id}/values/{value_id}:
-    delete:
-      tags:
-        - Brand Attributes
-      summary: Delete a Specific Brand Attribute Value
-      description: Deletes a specific brand attribute value.
-      parameters:
-        - name: brand_id
-          in: path
-          required: true
-          description: The ID of the brand.
-          schema:
-            type: string
-        - name: attribute_id
-          in: path
-          required: true
-          description: The ID of the attribute.
-          schema:
-            type: string
-        - name: value_id
-          in: path
-          required: true
-          description: The ID of the attribute value to delete.
-          schema:
-            type: string
-      responses:
-        "204":
-          description: Brand attribute value deleted successfully.
-        "404":
-          description: Brand, attribute, or attribute value not found.
-        "401":
-          description: Unauthorized. Invalid or missing authorization token.
-      security:
-        - bearerAuth: []
-    post:
-      tags:
-        - Brand Attributes
-      summary: Assign Attribute to Brand
-      description: Assigns a specific attribute to a brand.
-      parameters:
-        - name: brand_id
-          in: path
-          required: true
-          description: The ID of the brand to which the attribute will be assigned.
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                attribute_id:
-                  type: integer
-                  description: The ID of the attribute to be assigned to the brand.
-      responses:
-        "200":
-          description: Attribute assigned to brand successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Attribute assigned to brand successfully."
-        "400":
-          description: Bad request. Invalid input parameters.
-        "404":
-          description: Brand or attribute not found.
-        "401":
-          description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/assigned-attribute-sets:
@@ -3995,12 +4721,18 @@ paths:
                   message:
                     type: string
                     example: "Attribute set assigned to product successfully."
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Product or attribute set not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/channel/{channel_id}:
@@ -4043,12 +4775,18 @@ paths:
                   message:
                     type: string
                     example: "Web ID updated or created successfully."
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Product or channel not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /product-relation-types:
@@ -4063,14 +4801,15 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  product_relation_types:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/ProductRelationType"
+                $ref: "#/components/schemas/ProductRelationType"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -4091,10 +4830,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProductRelationType"
-      "400":
-        description: Bad request. Invalid input parameters.
-      "401":
-        description: Unauthorized. Invalid or missing authorization token.
+        "202":
+          description: Request has been accepted, but not yet processed.
+        "400":
+          description: Bad request. Invalid input parameters.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /product-relation-types/{relation_type_id}:
@@ -4120,10 +4865,16 @@ paths:
                 properties:
                   product_relation_type:
                     $ref: "#/components/schemas/ProductRelationType"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product relation type not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -4154,12 +4905,18 @@ paths:
                 properties:
                   product_relation_type:
                     $ref: "#/components/schemas/ProductRelationType"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Product relation type not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -4185,10 +4942,16 @@ paths:
                   message:
                     type: string
                     example: "Deleted."
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product relation type not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/relations:
@@ -4218,10 +4981,16 @@ paths:
                       type: array
                       items:
                         $ref: "#/components/schemas/ProductRelation"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/relations/type/{relation_type_id}:
@@ -4257,10 +5026,16 @@ paths:
                       type: array
                       items:
                         $ref: "#/components/schemas/ProductRelation"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product or relation type not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/relations/{related_product_id}/type/{relation_type_id}:
@@ -4309,12 +5084,18 @@ paths:
                       type: array
                       items:
                         $ref: "#/components/schemas/ProductRelation"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Product, related product, or relation type not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -4352,10 +5133,16 @@ paths:
                   message:
                     type: string
                     example: "Product relation deleted successfully."
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product, related product, or relation type not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/relations/{related_product_id}/type/{relation_type_id}/attributes:
@@ -4395,10 +5182,16 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/ProductRelationAttributeValue"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product, related product, or relation type not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -4452,12 +5245,18 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/ProductRelationAttributeValue"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Product, related product, or relation type not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/relations/{related_product_id}/type/{relation_type_id}/attribute/{attribute_id}:
@@ -4513,12 +5312,18 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/ProductRelationAttributeValue"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Product, related product, relation type, or attribute not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     delete:
@@ -4562,10 +5367,16 @@ paths:
                   message:
                     type: string
                     example: "Product relation attribute deleted successfully."
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product, related product, relation type, or attribute not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/tags:
@@ -4598,10 +5409,16 @@ paths:
                       type: array
                       items:
                         type: string
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -4646,10 +5463,16 @@ paths:
                       type: array
                       items:
                         type: string
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /products/{product_id}/tags/{version_id}:
@@ -4688,10 +5511,16 @@ paths:
                       type: array
                       items:
                         type: string
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product or version not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -4740,10 +5569,16 @@ paths:
                       type: array
                       items:
                         type: string
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Product or version not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /templates:
@@ -4764,8 +5599,14 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Template"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -4796,10 +5637,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Template"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /templates/{template_id}:
@@ -4822,10 +5669,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Template"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Template not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -4863,12 +5716,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Template"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Template not found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /webhooks:
@@ -4889,8 +5748,14 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Webhook"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     post:
@@ -4911,10 +5776,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Webhook"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /webhooks/{webhook_id}:
@@ -4937,10 +5808,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WebhookDetails"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Not found. The specified webhook could not be found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
     put:
@@ -4968,12 +5845,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Webhook"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "400":
           description: Bad request. Invalid input parameters.
         "404":
           description: Not found. The webhook to update could not be found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /webhooks/{webhook_id}/disable:
@@ -5000,10 +5883,16 @@ paths:
                   message:
                     type: string
                     example: "Webhook disabled successfully."
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Not found. The webhook to disable could not be found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
   /webhooks/{webhook_id}/enable:
@@ -5026,10 +5915,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Webhook"
+        "202":
+          description: Request has been accepted, but not yet processed.
         "404":
           description: Not found. The webhook to enable could not be found.
         "401":
           description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
 
