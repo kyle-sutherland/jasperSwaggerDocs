@@ -3710,7 +3710,7 @@ paths:
           description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
-  /product-assets:
+  /product_assets:
     get:
       tags:
         - Product Assets
@@ -3765,7 +3765,7 @@ paths:
           description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
-  /product-assets/{product_asset_id}:
+  /product_assets/{product_asset_id}:
     get:
       tags:
         - Product Assets
@@ -4797,7 +4797,7 @@ paths:
           description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
-  /product-relation-types:
+  /product_relation_types:
     get:
       tags:
         - Product Relations
@@ -4850,7 +4850,7 @@ paths:
           description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
-  /product-relation-types/{relation_type_id}:
+  /product_relation_types/{relation_type_id}:
     get:
       tags:
         - Product Relations
@@ -5589,6 +5589,27 @@ paths:
           description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
       security:
         - bearerAuth: []
+  /product_prices/bulk:
+    post:
+      tags:
+        - Product
+      requestBody:
+        description: Array of product ids to update prices for.
+        content:
+          application/json:
+            schema:
+              type: array
+      responses:
+        "200":
+          description: Product ids have been updated successfully.
+        "400":
+          description: One or more IDs provided were not found. Please check your request body.
+        "401":
+          description: Unauthorized. Invalid or missing authorization token.
+        "500":
+          description: Internal server error. Please report problems to Jasper.
+        "503":
+          description: Service unavailable. We are temporarily offline for maintenance. Please try again later.
   /templates:
     get:
       tags:
